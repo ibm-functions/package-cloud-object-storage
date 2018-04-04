@@ -52,7 +52,7 @@ EDGE_HOST=$(grep '^edge.host=' $WHISKPROPS_FILE | cut -d'=' -f2)
 # Set Environment
 export OPENWHISK_HOME=$WHISKDIR
 
-# Place this template in correct location to be included in packageDeploy
+# Place this package in correct location to be included in packageDeploy
 mkdir -p $PACKAGESDIR/preInstalled/ibm-functions
 cp -r $ROOTDIR $PACKAGESDIR/preInstalled/ibm-functions/
 

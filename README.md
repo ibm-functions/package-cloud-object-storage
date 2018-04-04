@@ -1,5 +1,5 @@
 # package-cloud-object-storage
-[![Build Status](https://travis-ci.org/ibm-functions/template-cloud-object-storage.svg?branch=master)](https://travis-ci.org/ibm-functions/template-cloud-object-storage)
+[![Build Status](https://travis-ci.org/ibm-functions/package-cloud-object-storage.svg?branch=master)](https://travis-ci.org/ibm-functions/package-cloud-object-storage)
 
 # Work in progress !!
 
@@ -10,7 +10,7 @@ This repository allows you to deploy a Cloud Object Storage Package for IBM Func
 The package contains a set of simple functions to get your started composing IBM Functions Applications.
 
 ### Available Languages
-This template is available in Node.js 8, Node.js 6, and Python 3.
+This package is available in Node.js 8, Node.js 6, and Python 3.
 
 # Deploy Cloud Object Storage Package with IBM Cloud Command Line Interface (CLI)
 

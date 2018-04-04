@@ -46,7 +46,7 @@ class CloudObjectStorageTests extends TestHelpers
   val successStatus =
     """"status":"success""""
 
-  val deployTestRepo = "https://github.com/ibm-functions/template-cloud-object-storage"
+  val deployTestRepo = "https://github.com/ibm-functions/package-cloud-object-storage"
   val actionWrite = "object-write"
   val actionRead = "object-read"
   val actionDelete = "object-delete"
@@ -65,10 +65,10 @@ class CloudObjectStorageTests extends TestHelpers
   val pythonfolder = "../runtimes/python";
   val pythonkind = "python-jessie:3"
 
-  behavior of "Cloudant Object Storage Template"
+  behavior of "Cloudant Object Storage Package"
 
-  // test to create the nodejs 8 Cloud Object Storage template from github url.  Will use preinstalled folder.
-  it should "create the nodejs 8 Cloud Object Storage template from github url" in {
+  // test to create the nodejs 8 Cloud Object Storage package from github url.  Will use preinstalled folder.
+  it should "create the nodejs 8 Cloud Object Storage package from github url" in {
 
     // create unique asset names
     val timestamp: String = System.currentTimeMillis.toString
@@ -113,8 +113,8 @@ class CloudObjectStorageTests extends TestHelpers
     wsk.pkg.delete(nodejs8Package)
   }
 
-  // test to create the nodejs 6 Cloud Object Storage template from github url.  Will use preinstalled folder.
-  it should "create the nodejs 6 Cloud Object Storage template from github url" in {
+  // test to create the nodejs 6 Cloud Object Storage package from github url.  Will use preinstalled folder.
+  it should "create the nodejs 6 Cloud Object Storage package from github url" in {
 
     // create unique asset names
     val timestamp: String = System.currentTimeMillis.toString
@@ -159,8 +159,8 @@ class CloudObjectStorageTests extends TestHelpers
     wsk.pkg.delete(nodejs6Package)
   }
 
-  // test to create the python Cloud Object Storage template from github url.  Will use preinstalled folder.
-  it should "create the python Cloud Object Storage template from github url" in {
+  // test to create the python Cloud Object Storage package from github url.  Will use preinstalled folder.
+  it should "create the python Cloud Object Storage package from github url" in {
 
     // create unique asset names
     val timestamp: String = System.currentTimeMillis.toString
