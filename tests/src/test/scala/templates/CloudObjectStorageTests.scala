@@ -50,7 +50,7 @@ class CloudObjectStorageTests extends TestHelpers
   val actionWrite = "object-write"
   val actionRead = "object-read"
   val actionDelete = "object-delete"
-  val packageName = "myPackage"
+  val packageName = "cloud-object-storage"
   val deployAction = "/whisk.system/deployWeb/wskdeploy"
   val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
 
@@ -58,9 +58,6 @@ class CloudObjectStorageTests extends TestHelpers
   val node8RuntimePath = "runtimes/nodejs"
   val nodejs8folder = "../runtimes/nodejs";
   val nodejs8kind = "nodejs:8"
-  val node6RuntimePath = "runtimes/nodejs-6"
-  val nodejs6folder = "../runtimes/nodejs-6";
-  val nodejs6kind = "nodejs:6"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "../runtimes/python";
   val pythonkind = "python-jessie:3"
@@ -71,18 +68,13 @@ class CloudObjectStorageTests extends TestHelpers
   it should "create the nodejs 8 Cloud Object Storage package from github url" in {
 
     // create unique asset names
-    val timestamp: String = System.currentTimeMillis.toString
-    val nodejs8Package = packageName + timestamp
-    val nodejs8ActionWrite = nodejs8Package + "/" + actionWrite
-    val nodejs8ActionRead = nodejs8Package + "/" + actionRead
-    val nodejs8ActionDelete = nodejs8Package + "/" + actionDelete
+    val nodejs8ActionWrite = packageName + "/" + actionWrite
+    val nodejs8ActionRead = packageName + "/" + actionRead
+    val nodejs8ActionDelete = packageName + "/" + actionDelete
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(node8RuntimePath),
-      "envData" -> JsObject(
-        "PACKAGE_NAME" -> JsString(nodejs8Package)
-      ),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
     ), successStatus, 200);
@@ -110,71 +102,20 @@ class CloudObjectStorageTests extends TestHelpers
     wsk.action.delete(nodejs8ActionWrite)
     wsk.action.delete(nodejs8ActionRead)
     wsk.action.delete(nodejs8ActionDelete)
-    wsk.pkg.delete(nodejs8Package)
-  }
-
-  // test to create the nodejs 6 Cloud Object Storage package from github url.  Will use preinstalled folder.
-  it should "create the nodejs 6 Cloud Object Storage package from github url" in {
-
-    // create unique asset names
-    val timestamp: String = System.currentTimeMillis.toString
-    val nodejs6Package = packageName + timestamp
-    val nodejs6ActionWrite = nodejs6Package + "/" + actionWrite
-    val nodejs6ActionRead = nodejs6Package + "/" + actionRead
-    val nodejs6ActionDelete = nodejs6Package + "/" + actionDelete
-
-    makePostCallWithExpectedResult(JsObject(
-      "gitUrl" -> JsString(deployTestRepo),
-      "manifestPath" -> JsString(node6RuntimePath),
-      "envData" -> JsObject(
-        "PACKAGE_NAME" -> JsString(nodejs6Package)
-      ),
-      "wskApiHost" -> JsString(wskprops.apihost),
-      "wskAuth" -> JsString(wskprops.authKey)
-    ), successStatus, 200);
-
-    withActivation(wsk.activation, wsk.action.invoke(nodejs6ActionWrite)) {
-      _.response.result.get.toString should include("Cannot read property 'cloud-object-storage' of undefined")
-    }
-    withActivation(wsk.activation, wsk.action.invoke(nodejs6ActionRead)) {
-      _.response.result.get.toString should include("Cannot read property 'cloud-object-storage' of undefined")
-    }
-    withActivation(wsk.activation, wsk.action.invoke(nodejs6ActionDelete)) {
-      _.response.result.get.toString should include("Cannot read property 'cloud-object-storage' of undefined")
-    }
-
-    val testActionWrite = wsk.action.get(nodejs6ActionWrite)
-    verifyAction(testActionWrite, nodejs6ActionWrite, JsString(nodejs6kind))
-
-    val testActionRead = wsk.action.get(nodejs6ActionRead)
-    verifyAction(testActionRead, nodejs6ActionRead, JsString(nodejs6kind))
-
-    val testActionDelete = wsk.action.get(nodejs6ActionDelete)
-    verifyAction(testActionDelete, nodejs6ActionDelete, JsString(nodejs6kind))
-
-    // clean up after test
-    wsk.action.delete(nodejs6ActionWrite)
-    wsk.action.delete(nodejs6ActionRead)
-    wsk.action.delete(nodejs6ActionDelete)
-    wsk.pkg.delete(nodejs6Package)
+    wsk.pkg.delete(packageName)
   }
 
   // test to create the python Cloud Object Storage package from github url.  Will use preinstalled folder.
   it should "create the python Cloud Object Storage package from github url" in {
 
     // create unique asset names
-    val timestamp: String = System.currentTimeMillis.toString
-    val pythonPackage = packageName + timestamp
-    val pythonActionWrite = pythonPackage + "/" + actionWrite
-    val pythonActionRead = pythonPackage + "/" + actionRead
-    val pythonActionDelete = pythonPackage + "/" + actionDelete
+    val pythonActionWrite = packageName + "/" + actionWrite
+    val pythonActionRead = packageName + "/" + actionRead
+    val pythonActionDelete = packageName + "/" + actionDelete
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(pythonRuntimePath),
-      "envData" -> JsObject(
-        "PACKAGE_NAME" -> JsString(pythonPackage)
-      ),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
     ), successStatus, 200);
@@ -202,7 +143,7 @@ class CloudObjectStorageTests extends TestHelpers
     wsk.action.delete(pythonActionWrite)
     wsk.action.delete(pythonActionRead)
     wsk.action.delete(pythonActionDelete)
-    wsk.pkg.delete(pythonPackage)
+    wsk.pkg.delete(packageName)
   }
 
   //TODO:
