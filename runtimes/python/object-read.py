@@ -9,7 +9,6 @@
 #     "Key": "Name of the object to read"
 #   }
 
-
 import sys
 import json
 import ibm_boto3
