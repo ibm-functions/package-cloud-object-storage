@@ -1,4 +1,4 @@
-# template-cloud-object-storage
+# package-cloud-object-storage
 [![Build Status](https://travis-ci.org/ibm-functions/template-cloud-object-storage.svg?branch=master)](https://travis-ci.org/ibm-functions/template-cloud-object-storage)
 
 # Work in progress !!
