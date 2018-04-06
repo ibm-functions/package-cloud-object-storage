@@ -42,6 +42,6 @@ function getParamsCOS(args, COS) {
   params.Key = Key;
   delete params.__bx_creds;
 
-  cos = cos || new COS.S3({ endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId });
+  cos = new COS.S3({ endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId });
   return { cos, params };
 }
