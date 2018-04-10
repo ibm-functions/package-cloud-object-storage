@@ -1,13 +1,14 @@
-packages:
-  cloud-object-storage:
-    namespace: _
-    actions:
-      object-read:
-        function: object-read.js
-        runtime: nodejs:8
-      object-write:
-        function: object-write.js
-        runtime: nodejs:8
-      object-delete:
-        function: object-delete.js
-        runtime: nodejs:8
+project:
+  namespace: _
+  packages:
+    cloud-object-storage:
+      actions:
+        object-read:
+          function: object-read.js
+          runtime: nodejs:8
+        object-write:
+          function: object-write.js
+          runtime: nodejs:8
+        object-delete:
+          function: object-delete.js
+          runtime: nodejs:8
