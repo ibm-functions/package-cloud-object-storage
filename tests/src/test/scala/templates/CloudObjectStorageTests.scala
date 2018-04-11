@@ -79,17 +79,6 @@ class CloudObjectStorageTests extends TestHelpers
       "wskAuth" -> JsString(wskprops.authKey)
     ), successStatus, 200);
 
-    // ensure actions were created from manifest and can be invoked
-    withActivation(wsk.activation, wsk.action.invoke(nodejs8ActionWrite)) {
-      _.response.result.get.toString should include("Cannot read property 'cloud-object-storage' of undefined")
-    }
-    withActivation(wsk.activation, wsk.action.invoke(nodejs8ActionRead)) {
-      _.response.result.get.toString should include("Cannot read property 'cloud-object-storage' of undefined")
-    }
-    withActivation(wsk.activation, wsk.action.invoke(nodejs8ActionDelete)) {
-      _.response.result.get.toString should include("Cannot read property 'cloud-object-storage' of undefined")
-    }
-
     // ensure actions exist and are of expected kind
     val testActionWrite = wsk.action.get(nodejs8ActionWrite)
     verifyAction(testActionWrite, nodejs8ActionWrite, JsString(nodejs8kind))
@@ -121,17 +110,6 @@ class CloudObjectStorageTests extends TestHelpers
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
     ), successStatus, 200);
-
-    // ensure actions were created from manifest and can be invoked
-    withActivation(wsk.activation, wsk.action.invoke(pythonActionWrite)) {
-      _.response.result.get.toString should include("The action did not return a dictionary.")
-    }
-    withActivation(wsk.activation, wsk.action.invoke(pythonActionRead)) {
-      _.response.result.get.toString should include("The action did not return a dictionary.")
-    }
-    withActivation(wsk.activation, wsk.action.invoke(pythonActionDelete)) {
-      _.response.result.get.toString should include("The action did not return a dictionary.")
-    }
 
     // ensure actions exist and are of expected kind
     val testActionWrite = wsk.action.get(pythonActionWrite)
