@@ -37,7 +37,7 @@ def main(args):
   'Data': str(object).encode(encoding='UTF-8')
   }
 
-  
+
 
 def getParamsCOS(args):
   endpoint = args.get('endpoint','https://s3-api.us-geo.objectstorage.softlayer.net')
