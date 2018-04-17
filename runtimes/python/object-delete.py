@@ -20,15 +20,20 @@ def main(args):
   params = resultsGetParams['params']
   bucket = params['Bucket']
   key = params['Key']
-  object = cos.delete_object(
+  try:
+    object = cos.delete_object(
     Bucket=bucket,
     Key=key,
-  )
+    )
+  except ClientError as e:
+    print(e)
+    raise e
+
   return {
-  'Bucket':bucket,
-  'Key':key,
-  'Data': str(object)
-  }
+    'Bucket':bucket,
+    'Key':key,
+    'Data': str(object)
+    }
 
 
 def getParamsCOS(args):

@@ -21,17 +21,23 @@ def main(args):
   params = resultsGetParams['params']
   bucket = params['Bucket']
   key = params['Key']
-  object = cos.put_object(
+  try:
+    object = cos.put_object(
     Body=params['Body'],
     Bucket=bucket,
     Key=key,
   )
+  except ClientError as e:
+    print(e)
+    raise e
+
   return {
   'Bucket':bucket,
   'Key':key,
   'Data': str(object).encode(encoding='UTF-8')
   }
 
+  
 
 def getParamsCOS(args):
   endpoint = args.get('endpoint','https://s3-api.us-geo.objectstorage.softlayer.net')
