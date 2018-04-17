@@ -18,11 +18,17 @@ def main(args):
   resultsGetParams = getParamsCOS(args)
   cos = resultsGetParams['cos']
   params = resultsGetParams['params']
+  bucket = params['Bucket']
+  key = params['Key']
   object = cos.delete_object(
-    Bucket=params['Bucket'],
-    Key=params['Key'],
+    Bucket=bucket,
+    Key=key,
   )
-  return {'data': str(object)}
+  return {
+  'Bucket':bucket,
+  'Key':key,
+  'Data': str(object)
+  }
 
 
 def getParamsCOS(args):

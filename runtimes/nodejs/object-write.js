@@ -11,10 +11,26 @@
  *     "Body": "Body of the object to write"
  *   }
  */
-var CloudObjectStorage = require('ibm-cos-sdk');
-function main(args) {
-  let { cos, params } = getParamsCOS(args, CloudObjectStorage);
-  return cos.putObject(params).promise();
+const CloudObjectStorage = require('ibm-cos-sdk');
+
+async function main(args) {
+  const { cos, params } = getParamsCOS(args, CloudObjectStorage);
+
+  let response;
+  try {
+    response = await cos.putObject(params).promise();
+  } catch (err) {
+    return Promise.reject({
+      Bucket: params.Bucket,
+      Key: params.Key,
+      Error: err,
+    });
+  }
+  return {
+    Bucket: params.Bucket,
+    Key: params.Key,
+    body: response,
+  };
 }
 
 
@@ -29,25 +45,26 @@ function main(args) {
 
 
 
-
 function getParamsCOS(args, COS) {
-  let Bucket = args.bucket || args.Bucket;
-  let Key = args.key || args.Key;
+  const Bucket = args.bucket || args.Bucket;
+  const Key = args.key || args.Key;
   let Body = args.body || args.Body;
   if (Body.type === 'Buffer') {
-      Body = new Buffer(Body.data)
+    Body = Buffer.from(Body.data);
   }
 
-  let operation = args.operation || 'getObject';
-  let endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
-  let ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
-  let apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds["cloud-object-storage"].apikey;
-  let serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds["cloud-object-storage"].resource_instance_id;
+  const operation = args.operation || 'getObject';
+  const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
+  const ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
+  const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;
+  const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
 
-  var params = {};
+  const params = {};
   params.Bucket = Bucket;
   params.Key = Key;
   params.Body = Body;
-  cos = new COS.S3({ endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId });
+  const cos = new COS.S3({
+    endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId,
+  });
   return { cos, params };
 }

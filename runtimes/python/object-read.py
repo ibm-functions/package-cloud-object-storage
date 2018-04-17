@@ -18,11 +18,17 @@ def main(args):
   resultsGetParams = getParamsCOS(args)
   cos = resultsGetParams['cos']
   params = resultsGetParams['params']
+  bucket = params['Bucket']
+  key = params['Key']
   object = cos.get_object(
-    Bucket=params['Bucket'],
-    Key=params['Key'],
+    Bucket=bucket,
+    Key=key,
   )
-  return {'data': str(object['Body'].read()).encode(encoding='UTF-8')}
+  return {
+  'Bucket':bucket,
+  'Key':key,
+  'Data': str(object['Body'].read()).encode(encoding='UTF-8')
+  }
 
 
 def getParamsCOS(args):
