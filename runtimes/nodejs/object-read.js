@@ -6,8 +6,8 @@
  *
  * In this case, the args variable will look like:
  *   {
- *     "Bucket": "your COS bucket name",
- *     "Key": "Name of the object to read"
+ *     "bucket": "your COS bucket name",
+ *     "key": "Name of the object to read"
  *   }
  */
 const CloudObjectStorage = require('ibm-cos-sdk');

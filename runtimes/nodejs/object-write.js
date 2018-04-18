@@ -6,9 +6,9 @@
  *
  * In this case, the args variable will look like:
  *   {
- *     "Bucket": "your COS bucket name",
- *     "Key": "Name of the object to write",
- *     "Body": "Body of the object to write"
+ *     "bucket": "your COS bucket name",
+ *     "key": "Name of the object to write",
+ *     "body": "Body of the object to write"
  *   }
  */
 const CloudObjectStorage = require('ibm-cos-sdk');

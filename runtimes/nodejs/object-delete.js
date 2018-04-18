@@ -6,8 +6,8 @@
  *
  * In this case, the args variable will look like:
  *   {
- *     "Bucket": "your COS bucket name",
- *     "Key": "Name of the object to delete"
+ *     "bucket": "your COS bucket name",
+ *     "key": "Name of the object to delete"
  *   }
  */
 const CloudObjectStorage = require('ibm-cos-sdk');
