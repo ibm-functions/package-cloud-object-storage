@@ -10,7 +10,7 @@
  *     "Key": "Name of the object to delete"
  *   }
  */
-var CloudObjectStorage = require('ibm-cos-sdk');
+const CloudObjectStorage = require('ibm-cos-sdk');
 
 async function main(args) {
   const { cos, params } = getParamsCOS(args, CloudObjectStorage);
@@ -21,14 +21,14 @@ async function main(args) {
   } catch (err) {
     console.log(err)
     throw {
-      Bucket: params.Bucket,
-      Key: params.Key,
-      Error: err,
+      bucket: params.bucket,
+      key: params.key,
+      error: err,
     };
   }
   return {
-    Bucket: params.Bucket,
-    Key: params.Key,
+    bucket: params.bucket,
+    key: params.key,
     body: response,
   };
 }
@@ -42,16 +42,16 @@ async function main(args) {
 
 
 function getParamsCOS(args, COS) {
-  const Bucket = args.bucket || args.Bucket;
-  const Key = args.key || args.Key;
+  const bucket = args.bucket || args.Bucket;
+  const key = args.key || args.Key;
   const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
   const ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
   const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;
   const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
 
   const params = args;
-  params.Bucket = Bucket;
-  params.Key = Key;
+  params.bucket = bucket;
+  params.key = key;
   delete params.__bx_creds;
 
   const cos = new COS.S3({

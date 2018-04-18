@@ -22,14 +22,14 @@ async function main(args) {
   } catch (err) {
     console.log(err)
     throw {
-      Bucket: params.Bucket,
-      Key: params.Key,
-      Error: err,
+      bucket: params.bucket,
+      key: params.key,
+      error: err,
     };
   }
   return {
-    Bucket: params.Bucket,
-    Key: params.Key,
+    bucket: params.bucket,
+    key: params.key,
     body: response,
   };
 }
@@ -47,23 +47,22 @@ async function main(args) {
 
 
 function getParamsCOS(args, COS) {
-  const Bucket = args.bucket || args.Bucket;
-  const Key = args.key || args.Key;
-  let Body = args.body || args.Body;
-  if (Body.type === 'Buffer') {
-    Body = Buffer.from(Body.data);
+  const bucket = args.bucket || args.Bucket;
+  const key = args.key || args.Key;
+  let body = args.body || args.Body;
+  if (body.type === 'Buffer') {
+    body = Buffer.from(body.data);
   }
 
-  const operation = args.operation || 'getObject';
   const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
   const ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
   const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;
   const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
 
   const params = {};
-  params.Bucket = Bucket;
-  params.Key = Key;
-  params.Body = Body;
+  params.bucket = bucket;
+  params.key = key;
+  params.body = body;
   const cos = new COS.S3({
     endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId,
   });
