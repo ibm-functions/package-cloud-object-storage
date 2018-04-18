@@ -17,21 +17,19 @@ async function main(args) {
   const { cos, params } = getParamsCOS(args, CloudObjectStorage);
 
   let response;
+  const result = {
+    bucket: params.Bucket,
+    key: params.Key,
+  };
   try {
     response = await cos.getObject(params).promise();
   } catch (err) {
     console.log(err)
-    throw {
-      bucket: params.bucket,
-      key: params.key,
-      error: err,
-    };
+    result.message = err.message;
+    throw result;
   }
-  return {
-    bucket: params.bucket,
-    key: params.key,
-    body: response.Body.toString('utf-8'),
-  };
+  result.body = response.Body;
+  return result;
 }
 
 
@@ -54,8 +52,8 @@ function getParamsCOS(args, COS) {
   const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
 
   const params = args;
-  params.bucket = bucket;
-  params.key = key;
+  params.Bucket = bucket;
+  params.Key = key;
   delete params.__bx_creds;
 
   const cos = new COS.S3({

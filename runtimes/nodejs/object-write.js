@@ -17,22 +17,23 @@ async function main(args) {
   const { cos, params } = getParamsCOS(args, CloudObjectStorage);
 
   let response;
+  const result = {
+    bucket: params.Bucket,
+    key: params.Key,
+  };
   try {
     response = await cos.putObject(params).promise();
   } catch (err) {
     console.log(err)
-    throw {
-      bucket: params.bucket,
-      key: params.key,
-      error: err,
-    };
+    result.message = err.message;
+    throw result;
   }
-  return {
-    bucket: params.bucket,
-    key: params.key,
-    body: response,
-  };
+  result.body = response;
+  return result;
 }
+
+
+
 
 
 
@@ -60,9 +61,9 @@ function getParamsCOS(args, COS) {
   const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
 
   const params = {};
-  params.bucket = bucket;
-  params.key = key;
-  params.body = body;
+  params.Bucket = bucket;
+  params.Key = key;
+  params.Body = body;
   const cos = new COS.S3({
     endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId,
   });
