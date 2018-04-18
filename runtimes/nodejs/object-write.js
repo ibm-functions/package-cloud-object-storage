@@ -20,11 +20,12 @@ async function main(args) {
   try {
     response = await cos.putObject(params).promise();
   } catch (err) {
-    return Promise.reject({
+    console.log(err)
+    throw {
       Bucket: params.Bucket,
       Key: params.Key,
       Error: err,
-    });
+    };
   }
   return {
     Bucket: params.Bucket,
