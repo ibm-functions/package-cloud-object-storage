@@ -51,10 +51,9 @@ function getParamsCOS(args, COS) {
   const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;
   const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
 
-  const params = args;
+  const params = {};
   params.Bucket = bucket;
   params.Key = key;
-  delete params.__bx_creds;
 
   const cos = new COS.S3({
     endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId
