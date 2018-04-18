@@ -34,7 +34,7 @@ def main(args):
   return {
   'bucket':bucket,
   'key':key,
-  'data': str(object).encode(encoding='UTF-8')
+  'data': str(object)
   }
 
 

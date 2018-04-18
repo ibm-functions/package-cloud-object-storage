@@ -32,7 +32,7 @@ def main(args):
   return {
   'bucket':bucket,
   'key':key,
-  'data': str(object['Body'].read()).encode(encoding='UTF-8')
+  'data': str(object['Body'].read())
   }
 
 
