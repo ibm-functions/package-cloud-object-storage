@@ -5,8 +5,8 @@
 #
 # In this case, the args variable will look like:
 #   {
-#     "Bucket": "your COS bucket name",
-#     "Key": "Name of the object to delete"
+#     "bucket": "your COS bucket name",
+#     "key": "Name of the object to delete"
 #   }
 
 import sys
@@ -18,8 +18,8 @@ def main(args):
   resultsGetParams = getParamsCOS(args)
   cos = resultsGetParams['cos']
   params = resultsGetParams['params']
-  bucket = params['Bucket']
-  key = params['Key']
+  bucket = params['bucket']
+  key = params['key']
   try:
     object = cos.delete_object(
     Bucket=bucket,
@@ -30,9 +30,9 @@ def main(args):
     raise e
 
   return {
-    'Bucket':bucket,
-    'Key':key,
-    'Data': str(object)
+    'bucket':bucket,
+    'key':key,
+    'data': str(object)
     }
 
 
@@ -48,6 +48,6 @@ def getParamsCOS(args):
     config=Config(signature_version='oauth'),
     endpoint_url=endpoint)
   params = {}
-  params['Bucket'] = args['Bucket']
-  params['Key'] = args['Key']
+  params['bucket'] = args['bucket']
+  params['key'] = args['key']
   return {'cos':cos, 'params':params}
