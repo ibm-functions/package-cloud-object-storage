@@ -52,7 +52,7 @@ function getParamsCOS(args, COS) {
   const cosHmacKeysId = args.__bx_creds['cloud-object-storage'].cos_hmac_keys.access_key_id;
   const cosHmacKeysSecret = args.__bx_creds['cloud-object-storage'].cos_hmac_keys.secret_access_key;
 
-  const params = args;
+  const params = {};
   params.Bucket = bucket;
   params.Key = key;
   params.Operation = operation;
