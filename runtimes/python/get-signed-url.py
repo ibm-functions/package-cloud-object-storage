@@ -56,4 +56,5 @@ def getParamsCOS(args):
   params = {}
   params['bucket'] = args['bucket']
   params['key'] = args['key']
+  params['operation'] = operation
   return {'cos':cos, 'params':params}
