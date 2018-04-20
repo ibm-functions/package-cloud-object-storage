@@ -14,17 +14,19 @@ const CloudObjectStorage = require('ibm-cos-sdk');
 
 async function main(args) {
   const { cos, params } = getParamsCOS(args, CloudObjectStorage);
-  const operation = params.Operation;
-  delete params.Operation;
-
+  const expires =  60 * 5
   let response;
   const result = {
-    bucket: params.Bucket,
-    key: params.Key,
+    bucket: params.bucket,
+    key: params.key,
   };
 
   try {
-    response = await cos.getSignedUrl(operation, params);
+    response = await cos.getSignedUrl(params.operation, {
+      Bucket: params.bucket,
+      Key: params.key,
+      Expires: expires,
+    });
   } catch (err) {
     console.log(err)
     result.message = err.message
@@ -53,9 +55,9 @@ function getParamsCOS(args, COS) {
   const cosHmacKeysSecret = args.__bx_creds['cloud-object-storage'].cos_hmac_keys.secret_access_key;
 
   const params = {};
-  params.Bucket = bucket;
-  params.Key = key;
-  params.Operation = operation;
+  params.bucket = bucket;
+  params.key = key;
+  params.operation = operation;
   delete params.__bx_creds;
   const config = {
     accessKeyId: cosHmacKeysId,
@@ -63,6 +65,6 @@ function getParamsCOS(args, COS) {
     endpoint,
   };
   COS.config.update(config);
-  const cos = new COS.S3();
+  const cos = new COS.S3({ signatureVersion: 'v4' });
   return { cos, params };
 }
