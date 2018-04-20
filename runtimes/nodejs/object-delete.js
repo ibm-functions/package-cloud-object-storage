@@ -16,12 +16,9 @@ async function main(args) {
   const { cos, params } = getParamsCOS(args, CloudObjectStorage);
 
   let response;
-  const result = {
-    bucket: params.Bucket,
-    key: params.Key,
-  };
+  const result = params;
   try {
-    response = await cos.deleteObject(params).promise();
+    response = await cos.deleteObject({ Bucket: params.bucket, Key: params.key }).promise();
   } catch (err) {
     console.log(err)
     result.message = err.message;
@@ -48,8 +45,8 @@ function getParamsCOS(args, COS) {
   const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
 
   const params = {};
-  params.Bucket = bucket;
-  params.Key = key;
+  params.bucket = bucket;
+  params.key = key;
 
   const cos = new COS.S3({
     endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId
