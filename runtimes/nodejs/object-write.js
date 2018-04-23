@@ -6,15 +6,30 @@
  *
  * In this case, the args variable will look like:
  *   {
- *     "Bucket": "your COS bucket name",
- *     "Key": "Name of the object to write",
- *     "Body": "Body of the object to write"
+ *     "bucket": "your COS bucket name",
+ *     "key": "Name of the object to write",
+ *     "body": "Body of the object to write"
  *   }
  */
-var CloudObjectStorage = require('ibm-cos-sdk');
-function main(args) {
-  let { cos, params } = getParamsCOS(args, CloudObjectStorage);
-  return cos.putObject(params).promise();
+const CloudObjectStorage = require('ibm-cos-sdk');
+
+async function main(args) {
+  const { cos, params } = getParamsCOS(args, CloudObjectStorage);
+
+  let response;
+  const result = {
+    bucket: params.bucket,
+    key: params.key,
+  };
+  try {
+    response = await cos.putObject({ Bucket: params.bucket, Key: params.key, Body: params.body }).promise();
+  } catch (err) {
+    console.log(err)
+    result.message = err.message;
+    throw result;
+  }
+  result.body = response;
+  return result;
 }
 
 
@@ -30,24 +45,27 @@ function main(args) {
 
 
 
+
+
 function getParamsCOS(args, COS) {
-  let Bucket = args.bucket || args.Bucket;
-  let Key = args.key || args.Key;
-  let Body = args.body || args.Body;
-  if (Body.type === 'Buffer') {
-      Body = new Buffer(Body.data)
+  const bucket = args.bucket || args.Bucket;
+  const key = args.key || args.Key;
+  let body = args.body || args.Body;
+  if (body.type === 'Buffer') {
+    body = Buffer.from(body.data);
   }
 
-  let operation = args.operation || 'getObject';
-  let endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
-  let ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
-  let apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds["cloud-object-storage"].apikey;
-  let serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds["cloud-object-storage"].resource_instance_id;
+  const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
+  const ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
+  const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;
+  const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
 
-  var params = {};
-  params.Bucket = Bucket;
-  params.Key = Key;
-  params.Body = Body;
-  cos = new COS.S3({ endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId });
+  const params = {};
+  params.bucket = bucket;
+  params.key = key;
+  params.body = body;
+  const cos = new COS.S3({
+    endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId,
+  });
   return { cos, params };
 }

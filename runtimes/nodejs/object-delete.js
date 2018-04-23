@@ -6,14 +6,26 @@
  *
  * In this case, the args variable will look like:
  *   {
- *     "Bucket": "your COS bucket name",
- *     "Key": "Name of the object to delete"
+ *     "bucket": "your COS bucket name",
+ *     "key": "Name of the object to delete"
  *   }
  */
-var CloudObjectStorage = require('ibm-cos-sdk');
-function main(args) {
-  let { cos, params } = getParamsCOS(args, CloudObjectStorage);
-  return cos.deleteObject(params).promise();
+const CloudObjectStorage = require('ibm-cos-sdk');
+
+async function main(args) {
+  const { cos, params } = getParamsCOS(args, CloudObjectStorage);
+
+  let response;
+  const result = params;
+  try {
+    response = await cos.deleteObject({ Bucket: params.bucket, Key: params.key }).promise();
+  } catch (err) {
+    console.log(err)
+    result.message = err.message;
+    throw result;
+  }
+  result.body = response;
+  return result;
 }
 
 
@@ -25,18 +37,19 @@ function main(args) {
 
 
 function getParamsCOS(args, COS) {
-  let Bucket = args.bucket || args.Bucket;
-  let Key = args.key || args.Key;
-  let endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
-  let ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
-  let apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds["cloud-object-storage"].apikey;
-  let serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds["cloud-object-storage"].resource_instance_id;
+  const bucket = args.bucket || args.Bucket;
+  const key = args.key || args.Key;
+  const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
+  const ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
+  const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;
+  const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
 
-  var params = args;
-  params.Bucket = Bucket;
-  params.Key = Key;
-  delete params.__bx_creds;
+  const params = {};
+  params.bucket = bucket;
+  params.key = key;
 
-  cos = new COS.S3({ endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId });
+  const cos = new COS.S3({
+    endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId
+  });
   return { cos, params };
 }

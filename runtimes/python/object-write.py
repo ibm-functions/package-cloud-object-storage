@@ -5,9 +5,9 @@
 
 # In this case, the args variable will look like:
 #   {
-#     "Bucket": "your COS bucket name",
-#     "Key": "Name of the object to write",
-#     "Body": "Body of the object to write"
+#     "bucket": "your COS bucket name",
+#     "key": "Name of the object to write",
+#     "body": "body of the object to write"
 #   }
 
 import sys
@@ -19,12 +19,24 @@ def main(args):
   resultsGetParams = getParamsCOS(args)
   cos = resultsGetParams['cos']
   params = resultsGetParams['params']
-  object = cos.put_object(
-    Body=params['Body'],
-    Bucket=params['Bucket'],
-    Key=params['Key'],
+  bucket = params['bucket']
+  key = params['key']
+  try:
+    object = cos.put_object(
+    Body=params['body'],
+    Bucket=bucket,
+    Key=key,
   )
-  return {'data': str(object).encode(encoding='UTF-8')}
+  except ClientError as e:
+    print(e)
+    raise e
+
+  return {
+  'bucket':bucket,
+  'key':key,
+  'data': str(object)
+  }
+
 
 
 def getParamsCOS(args):
@@ -39,7 +51,7 @@ def getParamsCOS(args):
     config=Config(signature_version='oauth'),
     endpoint_url=endpoint)
   params = {}
-  params['Bucket'] = args['Bucket']
-  params['Key'] = args['Key']
-  params['Body'] = args['Body']
+  params['bucket'] = args['bucket']
+  params['key'] = args['key']
+  params['body'] = args['body']
   return {'cos':cos, 'params':params}

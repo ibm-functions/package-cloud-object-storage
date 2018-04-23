@@ -5,8 +5,8 @@
 #
 # In this case, the args variable will look like:
 #   {
-#     "Bucket": "your COS bucket name",
-#     "Key": "Name of the object to read"
+#     "bucket": "your COS bucket name",
+#     "key": "Name of the object to read"
 #   }
 
 import sys
@@ -18,11 +18,22 @@ def main(args):
   resultsGetParams = getParamsCOS(args)
   cos = resultsGetParams['cos']
   params = resultsGetParams['params']
-  object = cos.get_object(
-    Bucket=params['Bucket'],
-    Key=params['Key'],
+  bucket = params['bucket']
+  key = params['key']
+  try:
+    object = cos.get_object(
+    Bucket=bucket,
+    Key=key,
   )
-  return {'data': str(object['Body'].read()).encode(encoding='UTF-8')}
+  except ClientError as e:
+    print(e)
+    raise e
+
+  return {
+  'bucket':bucket,
+  'key':key,
+  'data': str(object['Body'].read())
+  }
 
 
 def getParamsCOS(args):
@@ -37,6 +48,6 @@ def getParamsCOS(args):
     config=Config(signature_version='oauth'),
     endpoint_url=endpoint)
   params = {}
-  params['Bucket'] = args['Bucket']
-  params['Key'] = args['Key']
+  params['bucket'] = args['bucket']
+  params['key'] = args['key']
   return {'cos':cos, 'params':params}
