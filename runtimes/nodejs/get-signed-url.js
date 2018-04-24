@@ -14,7 +14,7 @@ const CloudObjectStorage = require('ibm-cos-sdk');
 
 async function main(args) {
   const { cos, params } = getParamsCOS(args, CloudObjectStorage);
-  const expires =  60 * 5
+  const expires = 60 * 5;
   let response;
   const result = {
     bucket: params.bucket,
@@ -28,8 +28,8 @@ async function main(args) {
       Expires: expires,
     });
   } catch (err) {
-    console.log(err)
-    result.message = err.message
+    console.log(err);
+    result.message = err.message;
     throw result;
   }
   result.url = response;
@@ -58,7 +58,6 @@ function getParamsCOS(args, COS) {
   params.bucket = bucket;
   params.key = key;
   params.operation = operation;
-  delete params.__bx_creds;
   const config = {
     accessKeyId: cosHmacKeysId,
     secretAccessKey: cosHmacKeysSecret,
