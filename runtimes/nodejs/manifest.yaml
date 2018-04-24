@@ -12,3 +12,6 @@ project:
         object-delete:
           function: object-delete.js
           runtime: nodejs:8
+        get-signed-url:
+          function: get-signed-url.js
+          runtime: nodejs:8
