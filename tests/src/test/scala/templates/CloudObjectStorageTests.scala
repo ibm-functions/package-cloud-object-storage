@@ -50,6 +50,7 @@ class CloudObjectStorageTests extends TestHelpers
   val actionWrite = "object-write"
   val actionRead = "object-read"
   val actionDelete = "object-delete"
+  val actionGetSignedUrl = "get-signed-url"
   val packageName = "cloud-object-storage"
   val deployAction = "/whisk.system/deployWeb/wskdeploy"
   val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
@@ -71,6 +72,7 @@ class CloudObjectStorageTests extends TestHelpers
     val nodejs8ActionWrite = packageName + "/" + actionWrite
     val nodejs8ActionRead = packageName + "/" + actionRead
     val nodejs8ActionDelete = packageName + "/" + actionDelete
+    val nodejs8ActionGetSignedUrl = packageName + "/" + actionGetSignedUrl
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
@@ -89,10 +91,14 @@ class CloudObjectStorageTests extends TestHelpers
     val testActionDelete = wsk.action.get(nodejs8ActionDelete)
     verifyAction(testActionDelete, nodejs8ActionDelete, JsString(nodejs8kind))
 
+    val testActionGetSignedUrl = wsk.action.get(nodejs8ActionGetSignedUrl)
+    verifyAction(testActionGetSignedUrl, nodejs8ActionGetSignedUrl, JsString(nodejs8kind))
+
     // clean up after test
     wsk.action.delete(nodejs8ActionWrite)
     wsk.action.delete(nodejs8ActionRead)
     wsk.action.delete(nodejs8ActionDelete)
+    wsk.action.delete(nodejs8ActionGetSignedUrl)
     wsk.pkg.delete(packageName)
   }
 
@@ -103,6 +109,7 @@ class CloudObjectStorageTests extends TestHelpers
     val pythonActionWrite = packageName + "/" + actionWrite
     val pythonActionRead = packageName + "/" + actionRead
     val pythonActionDelete = packageName + "/" + actionDelete
+    val pythonActionGetSignedUrl = packageName + "/" + actionGetSignedUrl
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
@@ -121,10 +128,14 @@ class CloudObjectStorageTests extends TestHelpers
     val testActionDelete = wsk.action.get(pythonActionDelete)
     verifyAction(testActionDelete, pythonActionDelete, JsString(pythonkind))
 
+    val testActionGetSignedUrl = wsk.action.get(pythonActionGetSignedUrl)
+    verifyAction(testActionGetSignedUrl, pythonActionGetSignedUrl, JsString(pythonkind))
+
     // clean up after test
     wsk.action.delete(pythonActionWrite)
     wsk.action.delete(pythonActionRead)
     wsk.action.delete(pythonActionDelete)
+    wsk.action.delete(pythonActionGetSignedUrl)
     wsk.pkg.delete(packageName)
   }
 

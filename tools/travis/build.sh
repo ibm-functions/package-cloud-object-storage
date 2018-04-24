@@ -1,14 +1,10 @@
 #!/bin/bash
 # Build script for Travis-CI.
 
-set -e
-
 SCRIPTDIR=$(cd $(dirname "$0") && pwd)
-ROOTDIR="$SCRIPTDIR/../.."
-HOMEDIR="$SCRIPTDIR/../../.."
-WHISKDIR="$HOMEDIR/openwhisk"
+ROOTDIR="$SCRIPTDIR/../../.."
+WHISKDIR="$ROOTDIR/openwhisk"
 PACKAGESDIR="$WHISKDIR/catalog/extra-packages"
-DEPLOYDIR="$PACKAGESDIR/packageDeploy"
 IMAGE_PREFIX="testing"
 
 # Set Environment
@@ -52,14 +48,14 @@ EDGE_HOST=$(grep '^edge.host=' $WHISKPROPS_FILE | cut -d'=' -f2)
 # Set Environment
 export OPENWHISK_HOME=$WHISKDIR
 
-# Place this package in correct location to be included in packageDeploy
+# Place this template in correct location to be included in packageDeploy
 mkdir -p $PACKAGESDIR/preInstalled/ibm-functions
-cp -r $ROOTDIR $PACKAGESDIR/preInstalled/ibm-functions/
+cp -r $ROOTDIR/package-cloud-object-storage $PACKAGESDIR/preInstalled/ibm-functions/
 
 # Install the deploy package
-cd $DEPLOYDIR/packages
-source $DEPLOYDIR/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
+cd $PACKAGESDIR/packageDeploy/packages
+source $PACKAGESDIR/packageDeploy/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
 
 # Test
-cd $ROOTDIR
+cd $ROOTDIR/package-cloud-object-storage
 ./gradlew :tests:test
