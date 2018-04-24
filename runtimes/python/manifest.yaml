@@ -13,5 +13,5 @@ project:
           function: object-delete.py
           runtime: python-jessie:3
         get-signed-url:
-          function: get-signed-url.js
+          function: get-signed-url.py
           runtime: python-jessie:3
