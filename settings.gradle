@@ -1,6 +1,6 @@
 include 'tests'
 
-rootProject.name = 'template-cloud-object-storage'
+rootProject.name = 'package-cloud-object-storage'
 
 gradle.ext.openwhisk = [
     version: '1.0.0-SNAPSHOT'
