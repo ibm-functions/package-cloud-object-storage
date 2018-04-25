@@ -50,7 +50,7 @@ class CloudObjectStorageTests extends TestHelpers
   val actionWrite = "object-write"
   val actionRead = "object-read"
   val actionDelete = "object-delete"
-  val actionGetSignedUrl = "get-signed-url"
+  val actionGetSignedUrl = "client-get-signed-url"
   val actionBucketCorsGet = "bucket-cors-get"
   val actionBucketCorsPut = "bucket-cors-put"
   val actionBucketCorsDelete = "bucket-cors-delete"

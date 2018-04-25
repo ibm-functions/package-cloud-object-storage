@@ -12,8 +12,8 @@ project:
         object-delete:
           function: object-delete.py
           runtime: python-jessie:3
-        get-signed-url:
-          function: get-signed-url.py
+        client-get-signed-url:
+          function: client-get-signed-url.py
           runtime: python-jessie:3
         bucket-cors-get:
           function: bucket-cors-get.py
