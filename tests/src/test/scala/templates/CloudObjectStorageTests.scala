@@ -127,6 +127,9 @@ class CloudObjectStorageTests extends TestHelpers
     val pythonActionRead = packageName + "/" + actionRead
     val pythonActionDelete = packageName + "/" + actionDelete
     val pythonActionGetSignedUrl = packageName + "/" + actionGetSignedUrl
+    val pythonActionBucketCorsGet = packageName + "/" + actionBucketCorsGet
+    val pythonActionBucketCorsPut = packageName + "/" + actionBucketCorsPut
+    val pythonActionBucketCorsDelete = packageName + "/" + actionBucketCorsDelete
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
@@ -148,11 +151,23 @@ class CloudObjectStorageTests extends TestHelpers
     val testActionGetSignedUrl = wsk.action.get(pythonActionGetSignedUrl)
     verifyAction(testActionGetSignedUrl, pythonActionGetSignedUrl, JsString(pythonkind))
 
+    val testActionBucketCorsGet = wsk.action.get(pythonActionBucketCorsGet)
+    verifyAction(testActionBucketCorsGet, pythonActionBucketCorsGet, JsString(pythonkind))
+
+    val testActionBucketCorsPut = wsk.action.get(pythonActionBucketCorsPut)
+    verifyAction(testActionBucketCorsPut, pythonActionBucketCorsPut, JsString(pythonkind))
+
+    val testActionBucketCorsDelete = wsk.action.get(pythonActionBucketCorsDelete)
+    verifyAction(testActionBucketCorsDelete, pythonActionBucketCorsDelete, JsString(pythonkind))
+
     // clean up after test
     wsk.action.delete(pythonActionWrite)
     wsk.action.delete(pythonActionRead)
     wsk.action.delete(pythonActionDelete)
     wsk.action.delete(pythonActionGetSignedUrl)
+    wsk.action.delete(pythonActionBucketCorsGet)
+    wsk.action.delete(pythonActionBucketCorsPut)
+    wsk.action.delete(pythonActionBucketCorsDelete)
     wsk.pkg.delete(packageName)
   }
 
