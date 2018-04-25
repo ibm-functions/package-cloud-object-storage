@@ -51,6 +51,9 @@ class CloudObjectStorageTests extends TestHelpers
   val actionRead = "object-read"
   val actionDelete = "object-delete"
   val actionGetSignedUrl = "get-signed-url"
+  val actionBucketCorsGet = "bucket-cors-get"
+  val actionBucketCorsPut = "bucket-cors-put"
+  val actionBucketCorsDelete = "bucket-cors-delete"
   val packageName = "cloud-object-storage"
   val deployAction = "/whisk.system/deployWeb/wskdeploy"
   val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
@@ -73,6 +76,9 @@ class CloudObjectStorageTests extends TestHelpers
     val nodejs8ActionRead = packageName + "/" + actionRead
     val nodejs8ActionDelete = packageName + "/" + actionDelete
     val nodejs8ActionGetSignedUrl = packageName + "/" + actionGetSignedUrl
+    val nodejs8ActionBucketCorsGet = packageName + "/" + actionBucketCorsGet
+    val nodejs8ActionBucketCorsPut = packageName + "/" + actionBucketCorsPut
+    val nodejs8ActionBucketCorsDelete = packageName + "/" + actionBucketCorsDelete
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
@@ -94,11 +100,22 @@ class CloudObjectStorageTests extends TestHelpers
     val testActionGetSignedUrl = wsk.action.get(nodejs8ActionGetSignedUrl)
     verifyAction(testActionGetSignedUrl, nodejs8ActionGetSignedUrl, JsString(nodejs8kind))
 
+    val testActionBucketCorsGet = wsk.action.get(nodejs8ActionBucketCorsGet)
+    verifyAction(testActionBucketCorsGet, nodejs8ActionBucketCorsGet, JsString(nodejs8kind))
+
+    val testActionBucketCorsPut = wsk.action.get(nodejs8ActionBucketCorsPut)
+    verifyAction(testActionBucketCorsPut, nodejs8ActionBucketCorsPut, JsString(nodejs8kind))
+
+    val testActionBucketCorsDelete = wsk.action.get(nodejs8ActionBucketCorsDelete)
+    verifyAction(testActionBucketCorsDelete, nodejs8ActionBucketCorsDelete, JsString(nodejs8kind))
     // clean up after test
     wsk.action.delete(nodejs8ActionWrite)
     wsk.action.delete(nodejs8ActionRead)
     wsk.action.delete(nodejs8ActionDelete)
     wsk.action.delete(nodejs8ActionGetSignedUrl)
+    wsk.action.delete(nodejs8ActionBucketCorsGet)
+    wsk.action.delete(nodejs8ActionBucketCorsPut)
+    wsk.action.delete(nodejs8ActionBucketCorsDelete)
     wsk.pkg.delete(packageName)
   }
 
