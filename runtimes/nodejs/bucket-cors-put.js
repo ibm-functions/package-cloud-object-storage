@@ -24,10 +24,9 @@ async function main(args) {
     response = await cos.putBucketCors({
       Bucket: params.bucket,
       CORSConfiguration: params.corsConfig,
-      ContentMD5: params.md5,
     }).promise();
   } catch (err) {
-    console.log(err)
+    console.log(err);
     result.message = err.message;
     throw result;
   }
@@ -49,10 +48,7 @@ async function main(args) {
 
 
 function getParamsCOS(args, COS) {
-
-  const bucket = args.bucket || args.Bucket;
-  const corsConfig = args.corsConfiguration;
-  const md5 = args.md5;
+  const { bucket, corsConfig } = args;
   const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
   const ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
   const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;
@@ -61,7 +57,6 @@ function getParamsCOS(args, COS) {
   const params = {};
   params.bucket = bucket;
   params.corsConfig = corsConfig;
-  params.md5 = md5;
   const cos = new COS.S3({
     endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId,
   });
