@@ -1,12 +1,12 @@
-# This action will delete from Cloud Object Storage.  If the Cloud Object Storage
-# service is not bound to this action or to the package containing this action,
-# then you must provide the service information as argument input to this function.
+# This action will delete CORS Configuration from a Cloud Object Storage bucket.
+# If the Cloud Object Storage service is not bound to this action or to the package
+# containing this action, then you must provide the service information as argument
+# input to this function.
 # Cloud Functions actions accept a single parameter, which must be a JSON object.
 #
 # In this case, the args variable will look like:
 #   {
 #     "bucket": "your COS bucket name",
-#     "key": "Name of the object to delete"
 #   }
 
 import sys
