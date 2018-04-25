@@ -32,7 +32,7 @@ async function main(args) {
     result.message = err.message;
     throw result;
   }
-  result.url = response;
+  result.body = response;
   return result;
 }
 

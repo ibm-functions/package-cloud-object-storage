@@ -28,7 +28,7 @@ def main(args):
 
   return {
     'bucket':bucket,
-    'data': str(object)
+    'body': str(object)
     }
 
 
