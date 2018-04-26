@@ -32,7 +32,7 @@ def main(args):
   return {
     'bucket':bucket,
     'key':key,
-    'data': str(object)
+    'body': str(object)
     }
 
 

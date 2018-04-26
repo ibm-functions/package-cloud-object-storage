@@ -26,7 +26,7 @@ def main(args):
         'Key': params['key'],
     },
   )
-  return {'data': str(object)}
+  return {'body': str(object)}
 
 
 

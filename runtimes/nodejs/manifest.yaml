@@ -12,8 +12,8 @@ project:
         object-delete:
           function: object-delete.js
           runtime: nodejs:8
-        get-signed-url:
-          function: get-signed-url.js
+        client-get-signed-url:
+          function: client-get-signed-url.js
           runtime: nodejs:8
         bucket-cors-get:
           function: bucket-cors-get.js

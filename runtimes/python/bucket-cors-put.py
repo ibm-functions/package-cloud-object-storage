@@ -15,15 +15,6 @@
 #      }]}
 #   }
 
-
-{
-        "CORSRules":
-        [{
-            "AllowedHeaders":["*"],
-            "AllowedMethods":["PUT","GET","DELETE"],
-            "AllowedOrigins":["*"]
-        }]}
-
 import sys
 import json
 import ibm_boto3
@@ -46,7 +37,7 @@ def main(args):
 
   return {
     'bucket':bucket,
-    'data': str(object)
+    'body': str(object)
     }
 
 
