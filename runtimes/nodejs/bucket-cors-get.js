@@ -46,7 +46,7 @@ async function main(args) {
 
 
 function getParamsCOS(args, COS) {
-  const { bucket } = { args };
+  const { bucket } = args;
   const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
   const ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
   const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;

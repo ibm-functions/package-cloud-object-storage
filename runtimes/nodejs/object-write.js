@@ -50,7 +50,7 @@ async function main(args) {
 
 
 function getParamsCOS(args, COS) {
-  const { bucket, key } = { args };
+  const { bucket, key } = args;
   let { body } = { args };
   if (body.type === 'Buffer') {
     body = Buffer.from(body.data);
