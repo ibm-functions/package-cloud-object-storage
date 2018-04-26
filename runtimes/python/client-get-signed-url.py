@@ -42,7 +42,7 @@ def getParamsCOS(args):
   if '_' not in operation:
     index = operation.find('object')
     operation = operation[:index] + '_' + operation[index:]
-  expires = args.get('expires', 60 * 5)
+  expires = args.get('expires', 60 * 15)
   endpoint = args.get('endpoint','https://s3-api.us-geo.objectstorage.softlayer.net')
   api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', '')))
   service_instance_id = args.get('resource_instance_id', args.get('serviceInstanceId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('resource_instance_id', '')))

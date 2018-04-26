@@ -49,7 +49,7 @@ async function main(args) {
 
 function getParamsCOS(args, COS) {
   const { bucket, key, operation } = args;
-  const expires = args.expires || 60 * 5; // url expires in 5 mins if not specified.
+  const expires = args.expires || 60 * 15; // url expires in 15 mins if not specified.
   const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
   const cosHmacKeysId = args.__bx_creds['cloud-object-storage'].cos_hmac_keys.access_key_id;
   const cosHmacKeysSecret = args.__bx_creds['cloud-object-storage'].cos_hmac_keys.secret_access_key;
