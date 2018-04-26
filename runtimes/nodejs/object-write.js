@@ -2,7 +2,7 @@
  * This action will write to Cloud Object Storage.  If the Cloud Object Storage
  * service is not bound to this action or to the package containing this action,
  * then you must provide the service information as argument input to this function.
- * @param Cloud Functions actions accept a single parameter, which must be a JSON object.
+ * Cloud Functions actions accept a single parameter, which must be a JSON object.
  *
  * In this case, the args variable will look like:
  *   {
@@ -22,9 +22,11 @@ async function main(args) {
     key: params.key,
   };
   try {
-    response = await cos.putObject({ Bucket: params.bucket, Key: params.key, Body: params.body }).promise();
+    response = await cos.putObject({
+      Bucket: params.bucket, Key: params.key, Body: params.body,
+    }).promise();
   } catch (err) {
-    console.log(err)
+    console.log(err);
     result.message = err.message;
     throw result;
   }
@@ -48,9 +50,8 @@ async function main(args) {
 
 
 function getParamsCOS(args, COS) {
-  const bucket = args.bucket || args.Bucket;
-  const key = args.key || args.Key;
-  let body = args.body || args.Body;
+  const { bucket, key } = { args };
+  let { body } = { args };
   if (body.type === 'Buffer') {
     body = Buffer.from(body.data);
   }
