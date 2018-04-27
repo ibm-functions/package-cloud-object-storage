@@ -1,12 +1,13 @@
-# This action will delete from Cloud Object Storage.  If the Cloud Object Storage
-# service is not bound to this action or to the package containing this action,
-# then you must provide the service information as argument input to this function.
+# This action will get a signed url based on the cloud object storage bucket, key,
+# and specified operation.  If the Cloud Object Storage service is not bound to this
+# action or to the package containing this action, then you must provide the
+# service information as argument input to this function.
 # Cloud Functions actions accept a single parameter, which must be a JSON object.
-#
 # In this case, the args variable will look like:
 #   {
-#     "Bucket": "your COS bucket name",
-#     "Key": "Name of the object to delete"
+#     "bucket": "your COS bucket name",
+#     "key": "Name of the object to be written",
+#     "operation":"putObject, getObject, or deleteObject"
 #   }
 
 import sys
@@ -19,7 +20,7 @@ def main(args):
   cos = resultsGetParams['cos']
   params = resultsGetParams['params']
   object = cos.generate_presigned_url(
-    ExpiresIn=60 * 5,
+    ExpiresIn=params['expires'],
     ClientMethod=params['operation'],
     Params={
         'Bucket': params['bucket'],
@@ -37,7 +38,11 @@ def main(args):
 def getParamsCOS(args):
   access_key_id=args.get('access_key_id')
   secret_access_key = args.get('secret_access_key')
-  operation = args.get('operation')
+  operation = args.get('operation').lower();
+  if '_' not in operation:
+    index = operation.find('object')
+    operation = operation[:index] + '_' + operation[index:]
+  expires = args.get('expires', 60 * 15)
   endpoint = args.get('endpoint','https://s3-api.us-geo.objectstorage.softlayer.net')
   api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', '')))
   service_instance_id = args.get('resource_instance_id', args.get('serviceInstanceId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('resource_instance_id', '')))
@@ -53,4 +58,5 @@ def getParamsCOS(args):
   params['bucket'] = args['bucket']
   params['key'] = args['key']
   params['operation'] = operation
+  params['expires'] = expires
   return {'cos':cos, 'params':params}

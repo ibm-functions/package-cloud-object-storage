@@ -10,7 +10,6 @@
  *     "bucket": "your COS bucket name"
  *   }
  */
- 
 const CloudObjectStorage = require('ibm-cos-sdk');
 
 async function main(args) {
@@ -23,7 +22,7 @@ async function main(args) {
   try {
     response = await cos.deleteBucketCors({ Bucket: params.bucket }).promise();
   } catch (err) {
-    console.log(err)
+    console.log(err);
     result.message = err.message;
     throw result;
   }
@@ -47,8 +46,7 @@ async function main(args) {
 
 
 function getParamsCOS(args, COS) {
-
-  const bucket = args.bucket || args.Bucket;
+  const { bucket } = args;
   const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
   const ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.ng.bluemix.net/oidc/token';
   const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;
