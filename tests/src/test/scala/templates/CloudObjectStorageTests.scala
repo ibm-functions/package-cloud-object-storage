@@ -188,7 +188,32 @@ class CloudObjectStorageTests extends TestHelpers
     val name = "deleteObjectNode" + timestamp
     val file = Some(new File(nodejsfolder, "bucket-cors-delete.js").toString())
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind=Some(nodejskind), parameters = Map("__bx_creds" => __bx_creds, "Bucket" => bucket))
+      action.create(
+        name,
+        file,
+        kind=Some(nodejskind),
+        parameters = Map("__bx_creds" => __bx_creds, "Bucket" => bucket, "Key" => "filename")
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name, params)) {
+      _.response.result.get.toString should include(s"bucket: $bucket")
+    }
+  }
+
+  // test individual package actions
+  it should "Test reading an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "getObjectNode" + timestamp
+    val file = Some(new File(nodejsfolder, "bucket-cors-delete.js").toString())
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(nodejskind),
+        parameters = Map("__bx_creds" => __bx_creds, "Bucket" => bucket.toJson, "Key" => "filename".toJson)
+      )
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, params)) {
