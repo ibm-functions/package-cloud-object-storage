@@ -21,7 +21,8 @@ package packages
 import org.junit.runner.RunWith
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.junit.JUnitRunner
-import common.{TestHelpers, Wsk, WskProps, WskTestHelpers}
+
+import common.{TestHelpers, Wsk, WskProps, WskTestHelpers, TestUtils}
 import common.TestUtils.RunResult
 import common.rest.WskRest
 import com.jayway.restassured.RestAssured
@@ -30,6 +31,9 @@ import spray.json._
 
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
+
+import java.io._
+import spray.json.DefaultJsonProtocol._
 
 
 @RunWith(classOf[JUnitRunner])
@@ -192,11 +196,11 @@ class CloudObjectStorageTests extends TestHelpers
         name,
         file,
         kind=Some(nodejskind),
-        parameters = Map("__bx_creds" => __bx_creds, "Bucket" => bucket, "Key" => "filename")
+        parameters = Map("__bx_creds" -> __bx_creds.toJson, "Bucket" -> bucket.toJson, "Key" -> "filename".toJson)
       )
     }
 
-    withActivation(wsk.activation, wsk.action.invoke(name, params)) {
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
       _.response.result.get.toString should include(s"bucket: $bucket")
     }
   }
@@ -212,11 +216,11 @@ class CloudObjectStorageTests extends TestHelpers
         name,
         file,
         kind=Some(nodejskind),
-        parameters = Map("__bx_creds" => __bx_creds, "Bucket" => bucket.toJson, "Key" => "filename".toJson)
+        parameters = Map("__bx_creds" -> __bx_creds.toJson, "Bucket" -> bucket.toJson, "Key" -> "filename".toJson)
       )
     }
 
-    withActivation(wsk.activation, wsk.action.invoke(name, params)) {
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
       _.response.result.get.toString should include(s"bucket: $bucket")
     }
   }
