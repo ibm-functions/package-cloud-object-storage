@@ -42,6 +42,16 @@ class CloudObjectStorageTests extends TestHelpers
   val wskRest: common.rest.WskRest = new WskRest
   val allowedActionDuration = 120 seconds
 
+  // get creds for COS instance
+  val creds = TestUtils.getVCAPcredentials("cloud-object-storage");
+  val apikey = creds.get("apikey")
+  var resource_instance_id = creds.get("resource_instance_id")
+  val __bx_creds = JsObject(
+    "cloud-object-storage" -> JsObject(
+      "apikey" -> JsString(apikey),
+      "resource_instance_id" -> JsString(resource_instance_id)))
+  val bucket="ibm-functions-devops-testing"
+
   // statuses for deployWeb
   val successStatus =
     """"status":"success""""
@@ -60,8 +70,8 @@ class CloudObjectStorageTests extends TestHelpers
 
   //set parameters for deploy tests
   val node8RuntimePath = "runtimes/nodejs"
-  val nodejs8folder = "../runtimes/nodejs";
-  val nodejs8kind = "nodejs:8"
+  val nodejsfolder = "../runtimes/nodejs";
+  val nodejskind = "nodejs:8"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "../runtimes/python";
   val pythonkind = "python-jessie:3"
@@ -72,13 +82,13 @@ class CloudObjectStorageTests extends TestHelpers
   it should "create the nodejs 8 Cloud Object Storage package from github url" in {
 
     // create unique asset names
-    val nodejs8ActionWrite = packageName + "/" + actionWrite
-    val nodejs8ActionRead = packageName + "/" + actionRead
-    val nodejs8ActionDelete = packageName + "/" + actionDelete
-    val nodejs8ActionGetSignedUrl = packageName + "/" + actionGetSignedUrl
-    val nodejs8ActionBucketCorsGet = packageName + "/" + actionBucketCorsGet
-    val nodejs8ActionBucketCorsPut = packageName + "/" + actionBucketCorsPut
-    val nodejs8ActionBucketCorsDelete = packageName + "/" + actionBucketCorsDelete
+    val nodejsActionWrite = packageName + "/" + actionWrite
+    val nodejsActionRead = packageName + "/" + actionRead
+    val nodejsActionDelete = packageName + "/" + actionDelete
+    val nodejsActionGetSignedUrl = packageName + "/" + actionGetSignedUrl
+    val nodejsActionBucketCorsGet = packageName + "/" + actionBucketCorsGet
+    val nodejsActionBucketCorsPut = packageName + "/" + actionBucketCorsPut
+    val nodejsActionBucketCorsDelete = packageName + "/" + actionBucketCorsDelete
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
@@ -88,34 +98,34 @@ class CloudObjectStorageTests extends TestHelpers
     ), successStatus, 200);
 
     // ensure actions exist and are of expected kind
-    val testActionWrite = wsk.action.get(nodejs8ActionWrite)
-    verifyAction(testActionWrite, nodejs8ActionWrite, JsString(nodejs8kind))
+    val testActionWrite = wsk.action.get(nodejsActionWrite)
+    verifyAction(testActionWrite, nodejsActionWrite, JsString(nodejskind))
 
-    val testActionRead = wsk.action.get(nodejs8ActionRead)
-    verifyAction(testActionRead, nodejs8ActionRead, JsString(nodejs8kind))
+    val testActionRead = wsk.action.get(nodejsActionRead)
+    verifyAction(testActionRead, nodejsActionRead, JsString(nodejskind))
 
-    val testActionDelete = wsk.action.get(nodejs8ActionDelete)
-    verifyAction(testActionDelete, nodejs8ActionDelete, JsString(nodejs8kind))
+    val testActionDelete = wsk.action.get(nodejsActionDelete)
+    verifyAction(testActionDelete, nodejsActionDelete, JsString(nodejskind))
 
-    val testActionGetSignedUrl = wsk.action.get(nodejs8ActionGetSignedUrl)
-    verifyAction(testActionGetSignedUrl, nodejs8ActionGetSignedUrl, JsString(nodejs8kind))
+    val testActionGetSignedUrl = wsk.action.get(nodejsActionGetSignedUrl)
+    verifyAction(testActionGetSignedUrl, nodejsActionGetSignedUrl, JsString(nodejskind))
 
-    val testActionBucketCorsGet = wsk.action.get(nodejs8ActionBucketCorsGet)
-    verifyAction(testActionBucketCorsGet, nodejs8ActionBucketCorsGet, JsString(nodejs8kind))
+    val testActionBucketCorsGet = wsk.action.get(nodejsActionBucketCorsGet)
+    verifyAction(testActionBucketCorsGet, nodejsActionBucketCorsGet, JsString(nodejskind))
 
-    val testActionBucketCorsPut = wsk.action.get(nodejs8ActionBucketCorsPut)
-    verifyAction(testActionBucketCorsPut, nodejs8ActionBucketCorsPut, JsString(nodejs8kind))
+    val testActionBucketCorsPut = wsk.action.get(nodejsActionBucketCorsPut)
+    verifyAction(testActionBucketCorsPut, nodejsActionBucketCorsPut, JsString(nodejskind))
 
-    val testActionBucketCorsDelete = wsk.action.get(nodejs8ActionBucketCorsDelete)
-    verifyAction(testActionBucketCorsDelete, nodejs8ActionBucketCorsDelete, JsString(nodejs8kind))
+    val testActionBucketCorsDelete = wsk.action.get(nodejsActionBucketCorsDelete)
+    verifyAction(testActionBucketCorsDelete, nodejsActionBucketCorsDelete, JsString(nodejskind))
     // clean up after test
-    wsk.action.delete(nodejs8ActionWrite)
-    wsk.action.delete(nodejs8ActionRead)
-    wsk.action.delete(nodejs8ActionDelete)
-    wsk.action.delete(nodejs8ActionGetSignedUrl)
-    wsk.action.delete(nodejs8ActionBucketCorsGet)
-    wsk.action.delete(nodejs8ActionBucketCorsPut)
-    wsk.action.delete(nodejs8ActionBucketCorsDelete)
+    wsk.action.delete(nodejsActionWrite)
+    wsk.action.delete(nodejsActionRead)
+    wsk.action.delete(nodejsActionDelete)
+    wsk.action.delete(nodejsActionGetSignedUrl)
+    wsk.action.delete(nodejsActionBucketCorsGet)
+    wsk.action.delete(nodejsActionBucketCorsPut)
+    wsk.action.delete(nodejsActionBucketCorsDelete)
     wsk.pkg.delete(packageName)
   }
 
@@ -171,8 +181,20 @@ class CloudObjectStorageTests extends TestHelpers
     wsk.pkg.delete(packageName)
   }
 
-  //TODO:
-  //Test individual actions -> how can we test object-delete, read, write with COS credentials for open?
+  // test individual package actions
+  it should "Test deleting an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "deleteObjectNode" + timestamp
+    val file = Some(new File(nodejsfolder, "bucket-cors-delete.js").toString())
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(name, file, kind=Some(nodejskind), parameters = Map("__bx_creds" => __bx_creds, "Bucket" => bucket))
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name, params)) {
+      _.response.result.get.toString should include(s"bucket: $bucket")
+    }
+  }
 
   private def makePostCallWithExpectedResult(params: JsObject, expectedResult: String, expectedCode: Int) = {
     val response = RestAssured.given()
