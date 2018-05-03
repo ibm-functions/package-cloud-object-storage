@@ -258,7 +258,7 @@ class CloudObjectStorageTests extends TestHelpers
     val name = "writeObjectNode" + timestamp
     val file = Some(new File(pythonfolder, "object-write.py").toString())
     val fileBody = "this is a file body".toString()
-    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson, "Body" -> fileBody.toJson)
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson, "body" -> fileBody.toJson)
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(
