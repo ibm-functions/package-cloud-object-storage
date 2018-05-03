@@ -203,7 +203,7 @@ class CloudObjectStorageTests extends TestHelpers
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
-      _.response.result.get.toString should include(s"bucket: $bucket")
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
     }
   }
 
@@ -225,7 +225,7 @@ class CloudObjectStorageTests extends TestHelpers
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
-      _.response.result.get.toString should include(s"bucket: $bucket")
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
     }
   }
 
@@ -246,7 +246,7 @@ class CloudObjectStorageTests extends TestHelpers
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
-      _.response.result.get.toString should include(s"bucket: $bucket")
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
     }
   }
 
@@ -257,7 +257,7 @@ class CloudObjectStorageTests extends TestHelpers
     val timestamp: String = System.currentTimeMillis.toString
     val name = "writeObjectNode" + timestamp
     val file = Some(new File(pythonfolder, "object-write.py").toString())
-    val fileBody = "this is a file body".toString
+    val fileBody = "this is a file body".toString()
     val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson, "Body" -> fileBody.toJson)
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -270,7 +270,7 @@ class CloudObjectStorageTests extends TestHelpers
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
-      _.response.result.get.toString should include(s"bucket: $bucket")
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
     }
   }
 
@@ -292,7 +292,7 @@ class CloudObjectStorageTests extends TestHelpers
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
-      _.response.result.get.toString should include(s"bucket: $bucket")
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
     }
   }
 
@@ -314,7 +314,7 @@ class CloudObjectStorageTests extends TestHelpers
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
-      _.response.result.get.toString should include(s"bucket: $bucket")
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
     }
   }
 
