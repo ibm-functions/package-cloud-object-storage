@@ -80,7 +80,7 @@ class CloudObjectStorageTests extends TestHelpers
   val pythonfolder = "../runtimes/python";
   val pythonkind = "python-jessie:3"
 
-  behavior of "Cloudant Object Storage Package"
+  behavior of "Cloud Object Storage Package"
 
   // test to create the nodejs 8 Cloud Object Storage package from github url.  Will use preinstalled folder.
   it should "create the nodejs 8 Cloud Object Storage package from github url" in {
