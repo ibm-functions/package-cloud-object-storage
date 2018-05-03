@@ -185,18 +185,20 @@ class CloudObjectStorageTests extends TestHelpers
     wsk.pkg.delete(packageName)
   }
 
-  // test individual package actions
-  it should "Test deleting an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  // test package action object-write.js
+  it should "Test node writing an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
   (wp, assetHelper) =>
     val timestamp: String = System.currentTimeMillis.toString
-    val name = "deleteObjectNode" + timestamp
-    val file = Some(new File(nodejsfolder, "bucket-cors-delete.js").toString())
+    val name = "writeObjectNode" + timestamp
+    val file = Some(new File(nodejsfolder, "object-write.js").toString())
+    val fileBody = "this is a file body".toString()
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson, "body" -> fileBody.toJson)
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(
         name,
         file,
-        kind=Some(nodejskind),
-        parameters = Map("__bx_creds" -> __bx_creds.toJson, "Bucket" -> bucket.toJson, "Key" -> "filename".toJson)
+        kind = Some(nodejskind),
+        parameters = params
       )
     }
 
@@ -205,18 +207,109 @@ class CloudObjectStorageTests extends TestHelpers
     }
   }
 
-  // test individual package actions
-  it should "Test reading an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  // test package action object-read.js
+  it should "Test node reading an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
   (wp, assetHelper) =>
     val timestamp: String = System.currentTimeMillis.toString
     val name = "getObjectNode" + timestamp
-    val file = Some(new File(nodejsfolder, "bucket-cors-delete.js").toString())
+    val file = Some(new File(nodejsfolder, "object-read.js").toString())
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson)
+
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(
         name,
         file,
         kind=Some(nodejskind),
-        parameters = Map("__bx_creds" -> __bx_creds.toJson, "Bucket" -> bucket.toJson, "Key" -> "filename".toJson)
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"bucket: $bucket")
+    }
+  }
+
+  // test package action object-delete.js
+  it should "Test node deleting an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "deleteObjectNode" + timestamp
+    val file = Some(new File(nodejsfolder, "object-delete.js").toString())
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson)
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(nodejskind),
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"bucket: $bucket")
+    }
+  }
+
+
+  // test package action object-write.py
+  it should "Test py writing an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "writeObjectNode" + timestamp
+    val file = Some(new File(pythonfolder, "object-write.py").toString())
+    val fileBody = "this is a file body".toString
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson, "Body" -> fileBody.toJson)
+
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(pythonkind),
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"bucket: $bucket")
+    }
+  }
+
+  // test package action object-read.py
+  it should "Test py reading an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "getObjectNode" + timestamp
+    val file = Some(new File(pythonfolder, "object-read.py").toString())
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson)
+
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(pythonkind),
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"bucket: $bucket")
+    }
+  }
+
+  // test package action object-delete.py
+  it should "Test py deleting an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "deleteObjectNode" + timestamp
+    val file = Some(new File(pythonfolder, "object-delete.py").toString())
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson)
+
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(pythonkind),
+        parameters = params
       )
     }
 
