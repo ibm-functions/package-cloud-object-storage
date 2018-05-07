@@ -22,4 +22,4 @@ before_install:
   - ./tools/travis/setup.sh
 
 script:
-  - ./tools/travis/build.sh
+  - "./tools/travis/build.sh && ./tools/travis/deploy.sh && ./tools/travis/deploy_cos.sh && ./tools/travis/test.sh"

@@ -1,32 +1,45 @@
 #!/bin/bash
 # Build script for Travis-CI.
 
-SCRIPTDIR=$(cd $(dirname "$0") && pwd)
-ROOTDIR="$SCRIPTDIR/../../.."
-WHISKDIR="$ROOTDIR/openwhisk"
-PACKAGESDIR="$WHISKDIR/catalog/extra-packages"
-IMAGE_PREFIX="testing"
+set -ex
 
-# Set Environment
+# Build script for Travis-CI.
+
+SCRIPTDIR=$(cd $(dirname "$0") && pwd)
+ROOTDIR="$SCRIPTDIR/../.."
+WHISKDIR="$ROOTDIR/../openwhisk"
+UTILDIR="$ROOTDIR/../incubator-openwhisk-utilities"
+
 export OPENWHISK_HOME=$WHISKDIR
 
+IMAGE_PREFIX="testing"
+
+# run scancode using the ASF Release configuration
+cd $UTILDIR
+scancode/scanCode.py --config scancode/ASF-Release-v2.cfg $ROOTDIR
+
+# Build OpenWhisk
 cd $WHISKDIR
 
-tools/build/scanCode.py "$SCRIPTDIR/../.."
-
-# Build Openwhisk
-./gradlew distDocker -PdockerImagePrefix=${IMAGE_PREFIX}
-
+#pull down images
+docker pull openwhisk/controller
+docker tag openwhisk/controller ${IMAGE_PREFIX}/controller
+docker pull openwhisk/invoker
+docker tag openwhisk/invoker ${IMAGE_PREFIX}/invoker
+docker pull openwhisk/nodejs6action
+docker tag openwhisk/nodejs6action ${IMAGE_PREFIX}/nodejs6action
 docker pull ibmfunctions/action-nodejs-v8
 docker tag ibmfunctions/action-nodejs-v8 ${IMAGE_PREFIX}/action-nodejs-v8
-
 docker pull ibmfunctions/action-python-v3
 docker tag ibmfunctions/action-python-v3 ${IMAGE_PREFIX}/action-python-v3
+
+TERM=dumb ./gradlew install
+
 
 cd $WHISKDIR/ansible
 
 # Deploy Openwhisk
-ANSIBLE_CMD="ansible-playbook -i environments/local -e docker_image_prefix=${IMAGE_PREFIX}"
+ANSIBLE_CMD="ansible-playbook -i ${ROOTDIR}/ansible/environments/local -e docker_image_prefix=${IMAGE_PREFIX}"
 
 $ANSIBLE_CMD setup.yml
 $ANSIBLE_CMD prereq.yml
