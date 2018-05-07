@@ -39,7 +39,6 @@ runtimes_manifest:
         prefix: "ibmfunctions"
         tag: "latest"
       deprecated: false
-    python:
     - kind: "nodejs:8"
       default: false
       image:
@@ -47,8 +46,9 @@ runtimes_manifest:
         prefix: "ibmfunctions"
         tag: "latest"
       deprecated: false
+    python:
     - kind: "python-jessie:3"
-      default: false
+      default: true
       image:
         name: "action-python-v3"
         prefix: "ibmfunctions"
