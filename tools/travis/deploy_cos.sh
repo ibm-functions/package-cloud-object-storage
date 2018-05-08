@@ -5,8 +5,8 @@ set -ex
 
 SCRIPTDIR=$(cd $(dirname "$0") && pwd)
 ROOTDIR="$SCRIPTDIR/../.."
-HOMEDIR="$SCRIPTDIR/../../.."
-WHISKDIR="$ROOTDIR/../openwhisk"
+HOMEDIR="$ROOTDIR/.."
+WHISKDIR="$HOMEDIR/openwhisk"
 # Set Environment
 export OPENWHISK_HOME=${OPENWHISK_HOME:=$WHISKDIR}
 WSK_CLI=${OPENWHISK_HOME}/bin/wsk
