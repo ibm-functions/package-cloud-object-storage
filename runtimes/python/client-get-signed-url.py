@@ -19,6 +19,8 @@ def main(args):
   resultsGetParams = getParamsCOS(args)
   cos = resultsGetParams['cos']
   params = resultsGetParams['params']
+  bucket = params['bucket']
+  key = params['key']
   object = cos.generate_presigned_url(
     ExpiresIn=params['expires'],
     ClientMethod=params['operation'],
@@ -27,7 +29,11 @@ def main(args):
         'Key': params['key'],
     },
   )
-  return {'body': str(object)}
+  return {
+    'bucket':bucket,
+    'key':key,
+    'body': str(object)
+  }
 
 
 
@@ -36,8 +42,8 @@ def main(args):
 
 
 def getParamsCOS(args):
-  access_key_id=args.get('access_key_id')
-  secret_access_key = args.get('secret_access_key')
+  access_key_id=args.get('accessKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('cos_hmac_keys', {}).get('access_key_id', ''))
+  secret_access_key = args.get('secretAccessKey', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('cos_hmac_keys', {}).get('secret_access_key', ''))
   operation = args.get('operation').lower();
   if '_' not in operation:
     index = operation.find('object')
