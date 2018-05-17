@@ -21,7 +21,8 @@ package packages
 import org.junit.runner.RunWith
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.junit.JUnitRunner
-import common.{TestHelpers, Wsk, WskProps, WskTestHelpers}
+
+import common.{TestHelpers, Wsk, WskProps, WskTestHelpers, TestUtils}
 import common.TestUtils.RunResult
 import common.rest.WskRest
 import com.jayway.restassured.RestAssured
@@ -30,6 +31,9 @@ import spray.json._
 
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
+
+import java.io._
+import spray.json.DefaultJsonProtocol._
 
 
 @RunWith(classOf[JUnitRunner])
@@ -41,6 +45,16 @@ class CloudObjectStorageTests extends TestHelpers
   val wsk = new Wsk()
   val wskRest: common.rest.WskRest = new WskRest
   val allowedActionDuration = 120 seconds
+
+  // get creds for COS instance
+  val creds = TestUtils.getVCAPcredentials("cloud-object-storage");
+  val apikey = creds.get("apikey")
+  var resource_instance_id = creds.get("resource_instance_id")
+  val __bx_creds = JsObject(
+    "cloud-object-storage" -> JsObject(
+      "apikey" -> JsString(apikey),
+      "resource_instance_id" -> JsString(resource_instance_id)))
+  val bucket="ibm-functions-devops-testing"
 
   // statuses for deployWeb
   val successStatus =
@@ -60,8 +74,8 @@ class CloudObjectStorageTests extends TestHelpers
 
   //set parameters for deploy tests
   val node8RuntimePath = "runtimes/nodejs"
-  val nodejs8folder = "../runtimes/nodejs";
-  val nodejs8kind = "nodejs:8"
+  val nodejsfolder = "../runtimes/nodejs";
+  val nodejskind = "nodejs:8"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "../runtimes/python";
   val pythonkind = "python-jessie:3"
@@ -72,13 +86,13 @@ class CloudObjectStorageTests extends TestHelpers
   it should "create the nodejs 8 Cloud Object Storage package from github url" in {
 
     // create unique asset names
-    val nodejs8ActionWrite = packageName + "/" + actionWrite
-    val nodejs8ActionRead = packageName + "/" + actionRead
-    val nodejs8ActionDelete = packageName + "/" + actionDelete
-    val nodejs8ActionGetSignedUrl = packageName + "/" + actionGetSignedUrl
-    val nodejs8ActionBucketCorsGet = packageName + "/" + actionBucketCorsGet
-    val nodejs8ActionBucketCorsPut = packageName + "/" + actionBucketCorsPut
-    val nodejs8ActionBucketCorsDelete = packageName + "/" + actionBucketCorsDelete
+    val nodejsActionWrite = packageName + "/" + actionWrite
+    val nodejsActionRead = packageName + "/" + actionRead
+    val nodejsActionDelete = packageName + "/" + actionDelete
+    val nodejsActionGetSignedUrl = packageName + "/" + actionGetSignedUrl
+    val nodejsActionBucketCorsGet = packageName + "/" + actionBucketCorsGet
+    val nodejsActionBucketCorsPut = packageName + "/" + actionBucketCorsPut
+    val nodejsActionBucketCorsDelete = packageName + "/" + actionBucketCorsDelete
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
@@ -88,34 +102,34 @@ class CloudObjectStorageTests extends TestHelpers
     ), successStatus, 200);
 
     // ensure actions exist and are of expected kind
-    val testActionWrite = wsk.action.get(nodejs8ActionWrite)
-    verifyAction(testActionWrite, nodejs8ActionWrite, JsString(nodejs8kind))
+    val testActionWrite = wsk.action.get(nodejsActionWrite)
+    verifyAction(testActionWrite, nodejsActionWrite, JsString(nodejskind))
 
-    val testActionRead = wsk.action.get(nodejs8ActionRead)
-    verifyAction(testActionRead, nodejs8ActionRead, JsString(nodejs8kind))
+    val testActionRead = wsk.action.get(nodejsActionRead)
+    verifyAction(testActionRead, nodejsActionRead, JsString(nodejskind))
 
-    val testActionDelete = wsk.action.get(nodejs8ActionDelete)
-    verifyAction(testActionDelete, nodejs8ActionDelete, JsString(nodejs8kind))
+    val testActionDelete = wsk.action.get(nodejsActionDelete)
+    verifyAction(testActionDelete, nodejsActionDelete, JsString(nodejskind))
 
-    val testActionGetSignedUrl = wsk.action.get(nodejs8ActionGetSignedUrl)
-    verifyAction(testActionGetSignedUrl, nodejs8ActionGetSignedUrl, JsString(nodejs8kind))
+    val testActionGetSignedUrl = wsk.action.get(nodejsActionGetSignedUrl)
+    verifyAction(testActionGetSignedUrl, nodejsActionGetSignedUrl, JsString(nodejskind))
 
-    val testActionBucketCorsGet = wsk.action.get(nodejs8ActionBucketCorsGet)
-    verifyAction(testActionBucketCorsGet, nodejs8ActionBucketCorsGet, JsString(nodejs8kind))
+    val testActionBucketCorsGet = wsk.action.get(nodejsActionBucketCorsGet)
+    verifyAction(testActionBucketCorsGet, nodejsActionBucketCorsGet, JsString(nodejskind))
 
-    val testActionBucketCorsPut = wsk.action.get(nodejs8ActionBucketCorsPut)
-    verifyAction(testActionBucketCorsPut, nodejs8ActionBucketCorsPut, JsString(nodejs8kind))
+    val testActionBucketCorsPut = wsk.action.get(nodejsActionBucketCorsPut)
+    verifyAction(testActionBucketCorsPut, nodejsActionBucketCorsPut, JsString(nodejskind))
 
-    val testActionBucketCorsDelete = wsk.action.get(nodejs8ActionBucketCorsDelete)
-    verifyAction(testActionBucketCorsDelete, nodejs8ActionBucketCorsDelete, JsString(nodejs8kind))
+    val testActionBucketCorsDelete = wsk.action.get(nodejsActionBucketCorsDelete)
+    verifyAction(testActionBucketCorsDelete, nodejsActionBucketCorsDelete, JsString(nodejskind))
     // clean up after test
-    wsk.action.delete(nodejs8ActionWrite)
-    wsk.action.delete(nodejs8ActionRead)
-    wsk.action.delete(nodejs8ActionDelete)
-    wsk.action.delete(nodejs8ActionGetSignedUrl)
-    wsk.action.delete(nodejs8ActionBucketCorsGet)
-    wsk.action.delete(nodejs8ActionBucketCorsPut)
-    wsk.action.delete(nodejs8ActionBucketCorsDelete)
+    wsk.action.delete(nodejsActionWrite)
+    wsk.action.delete(nodejsActionRead)
+    wsk.action.delete(nodejsActionDelete)
+    wsk.action.delete(nodejsActionGetSignedUrl)
+    wsk.action.delete(nodejsActionBucketCorsGet)
+    wsk.action.delete(nodejsActionBucketCorsPut)
+    wsk.action.delete(nodejsActionBucketCorsDelete)
     wsk.pkg.delete(packageName)
   }
 
@@ -171,8 +185,138 @@ class CloudObjectStorageTests extends TestHelpers
     wsk.pkg.delete(packageName)
   }
 
-  //TODO:
-  //Test individual actions -> how can we test object-delete, read, write with COS credentials for open?
+  // test package action object-write.js
+  it should "Test node writing an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "writeObjectNode" + timestamp
+    val file = Some(new File(nodejsfolder, "object-write.js").toString())
+    val fileBody = "this is a file body".toString()
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson, "body" -> fileBody.toJson)
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind = Some(nodejskind),
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
+    }
+  }
+
+  // test package action object-read.js
+  it should "Test node reading an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "getObjectNode" + timestamp
+    val file = Some(new File(nodejsfolder, "object-read.js").toString())
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson)
+
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(nodejskind),
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
+    }
+  }
+
+  // test package action object-delete.js
+  it should "Test node deleting an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "deleteObjectNode" + timestamp
+    val file = Some(new File(nodejsfolder, "object-delete.js").toString())
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson)
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(nodejskind),
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
+    }
+  }
+
+
+  // test package action object-write.py
+  it should "Test py writing an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "writeObjectNode" + timestamp
+    val file = Some(new File(pythonfolder, "object-write.py").toString())
+    val fileBody = "this is a file body".toString()
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson, "body" -> fileBody.toJson)
+
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(pythonkind),
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
+    }
+  }
+
+  // test package action object-read.py
+  it should "Test py reading an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "getObjectNode" + timestamp
+    val file = Some(new File(pythonfolder, "object-read.py").toString())
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson)
+
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(pythonkind),
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
+    }
+  }
+
+  // test package action object-delete.py
+  it should "Test py deleting an object in Cloud Object Storage Bucket on IBM Cloud" in withAssetCleaner(wskprops) {
+  (wp, assetHelper) =>
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "deleteObjectNode" + timestamp
+    val file = Some(new File(pythonfolder, "object-delete.py").toString())
+    val params = Map("__bx_creds" -> __bx_creds.toJson, "bucket" -> bucket.toJson, "key" -> "testObjectNode".toJson)
+
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(
+        name,
+        file,
+        kind=Some(pythonkind),
+        parameters = params
+      )
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      _.response.result.get.toString should include(s"""bucket":"$bucket"""")
+    }
+  }
 
   private def makePostCallWithExpectedResult(params: JsObject, expectedResult: String, expectedCode: Int) = {
     val response = RestAssured.given()
