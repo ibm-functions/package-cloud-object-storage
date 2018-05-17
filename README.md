@@ -78,11 +78,11 @@ bx wsk action invoke cloud-object-storage/bucket-cors-put -b -p bucket myBucket 
 ```
 Read CORS on a bucket `myBucket`:
 ```
-bx wsk action invoke cloud-object-storage/bucket-cors-get -b -p bucket myBucket"
+bx wsk action invoke cloud-object-storage/bucket-cors-get -b -p bucket myBucket
 ```
 Delete CORS from a bucket `myBucket`:
 ```
-bx wsk action invoke cloud-object-storage/bucket-cors-delete -b -p bucket myBucket"
+bx wsk action invoke cloud-object-storage/bucket-cors-delete -b -p bucket myBucket
 ```
 
 ## CI/CD
