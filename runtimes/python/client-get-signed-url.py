@@ -19,6 +19,8 @@ def main(args):
   resultsGetParams = getParamsCOS(args)
   cos = resultsGetParams['cos']
   params = resultsGetParams['params']
+  bucket = params['bucket']
+  key = params['key']
   object = cos.generate_presigned_url(
     ExpiresIn=params['expires'],
     ClientMethod=params['operation'],
@@ -27,7 +29,11 @@ def main(args):
         'Key': params['key'],
     },
   )
-  return {'body': str(object)}
+  return {
+    'bucket':bucket,
+    'key':key,
+    'body': str(object)
+  }
 
 
 
@@ -36,14 +42,14 @@ def main(args):
 
 
 def getParamsCOS(args):
-  access_key_id=args.get('access_key_id')
-  secret_access_key = args.get('secret_access_key')
   operation = args.get('operation').lower();
   if '_' not in operation:
     index = operation.find('object')
     operation = operation[:index] + '_' + operation[index:]
   expires = args.get('expires', 60 * 15)
   endpoint = args.get('endpoint','https://s3-api.us-geo.objectstorage.softlayer.net')
+  access_key_id=args.get('access_key_id', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('cos_hmac_keys', {}).get('access_key_id', ''))
+  secret_access_key = args.get('secret_access_key', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('cos_hmac_keys', {}).get('secret_access_key', ''))
   api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', '')))
   service_instance_id = args.get('resource_instance_id', args.get('serviceInstanceId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('resource_instance_id', '')))
   ibm_auth_endpoint = args.get('ibmAuthEndpoint', 'https://iam.ng.bluemix.net/oidc/token')
