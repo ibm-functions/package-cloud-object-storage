@@ -25,7 +25,7 @@ async function main(args) {
     result.message = err.message;
     throw result;
   }
-  result.body = response.Body;
+  result.body = response.Body.toString();
   return result;
 }
 
