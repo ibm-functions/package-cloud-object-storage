@@ -4,23 +4,23 @@ project:
     cloud-object-storage:
       actions:
         object-read:
-          function: object-read.js
+          function: actions/object-read.js
           runtime: nodejs:8
         object-write:
-          function: object-write.js
+          function: actions/object-write.js
           runtime: nodejs:8
         object-delete:
-          function: object-delete.js
+          function: actions/object-delete.js
           runtime: nodejs:8
         client-get-signed-url:
-          function: client-get-signed-url.js
+          function: actions/client-get-signed-url.js
           runtime: nodejs:8
         bucket-cors-get:
-          function: bucket-cors-get.js
+          function: actions/bucket-cors-get.js
           runtime: nodejs:8
         bucket-cors-put:
-          function: bucket-cors-put.js
+          function: actions/bucket-cors-put.js
           runtime: nodejs:8
         bucket-cors-delete:
-          function: bucket-cors-delete.js
+          function: actions/bucket-cors-delete.js
           runtime: nodejs:8
