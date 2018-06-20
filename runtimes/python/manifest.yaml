@@ -4,23 +4,23 @@ project:
     cloud-object-storage:
       actions:
         object-read:
-          function: object-read.py
+          function: actions/object-read.py
           runtime: python-jessie:3
         object-write:
-          function: object-write.py
+          function: actions/object-write.py
           runtime: python-jessie:3
         object-delete:
-          function: object-delete.py
+          function: actions/object-delete.py
           runtime: python-jessie:3
         client-get-signed-url:
-          function: client-get-signed-url.py
+          function: actions/client-get-signed-url.py
           runtime: python-jessie:3
         bucket-cors-get:
-          function: bucket-cors-get.py
+          function: actions/bucket-cors-get.py
           runtime: python-jessie:3
         bucket-cors-put:
-          function: bucket-cors-put.py
+          function: actions/bucket-cors-put.py
           runtime: python-jessie:3
         bucket-cors-delete:
-          function: bucket-cors-delete.py
+          function: actions/bucket-cors-delete.py
           runtime: python-jessie:3
