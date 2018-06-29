@@ -36,7 +36,7 @@ runtimes_manifest:
       default: true
       image:
         name: "nodejs6action"
-        prefix: "ibmfunctions"
+        prefix: "openwhisk"
         tag: "latest"
       deprecated: false
     - kind: "nodejs:8"
@@ -55,6 +55,8 @@ runtimes_manifest:
         tag: "latest"
       deprecated: false
   blackboxes:
-    - name: "dockerskeleton"
+  - name: "dockerskeleton"
+    prefix: "openwhisk"
+    tag: "1.3.0"
 
 controller_protocol: "http"
