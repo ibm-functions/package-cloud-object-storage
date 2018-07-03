@@ -95,23 +95,11 @@ deploy.sh
 
 Currently there is no direct way to simply deploy the Cloud Object Storage package from the IBM Cloud Functions UI.  However, there is a workaround that provides you with a way to install the cloud-object-storage package in the NodeJS runtime. 
 
-To do this you will have to install the **COS Image Upload** template which installs the **cloud-object-storage** package as a prerequisite for the template. 
+To do this you will have to install the **Upload Image** template which installs the **cloud-object-storage** package as a prerequisite for the template. 
 
-To do this follow these steps:
-1. Navigate to the [IBM Cloud Functions UI](https://console.bluemix.net/openwhisk)
-2. Click on the **Start Creating** button which can be found on the homepage. You may see a **Log In** button instead, if you do, first log in and then you should see the **Start Creating** button after a successful login.
-3. Click on the **Quickstart Templates** section
-4. Choose the template **COS Image Upload**
-5. From the first page of the Template click on the **Next** button located at the bottom right of the page
-6. On the following page you should see a selector that contains 3 types of configuration:
-   * **Create an new instance**: Selecting this option will take you to the IBM Cloud page for creating Cloud Object Storage instances. It is important that after you create your instance you create a set of Service Credentials that contain the needed HMAC keys (See below)
-   * **Input your own credentials**: Selecting this will prompt you to manually enter your own credentials for a COS instance
-   * **Existing Instances**: If you already have any COS instances created they should be automatically populated in the dropdown. Clicking an existing instance will attempt to fetch the credentials as well as any Buckets existing on that instance
-  
-   * **Important Note**
-   In order for the COS Template to be deployed properly your COS instance should have HMAC keys present as well as an already existing bucket.  For information on creating HMAC keys refer to this documentation: [Create COS Service Credentials](https://console.bluemix.net/docs/services/cloud-object-storage/iam/service-credentials.html#service-credentials)
-7. After inputting all the correct information the **Deploy** button should be enabled and you can deploy the template. 
-8. Upon a succesful deployment you will notice that you now have the Package **cloud-object-storage** present in your namespace.  You can set up use these Actions as you would any other Actions.
+To do this follow the installation process for the UI on the [Upload Image template's github repo](https://github.com/ibm-functions/template-cloud-object-storage#deploying-from-the-ibm-cloud-functions-ui)
+
+Upon a succesful deployment you will notice that you now have the Package **cloud-object-storage** present in your namespace.  You can use these Actions as you would any other Actions as well as edit their code to suit any specific behavior you may need from the IBM Cloud Object Storage package.
 
 ### License
 Apache-2.0
