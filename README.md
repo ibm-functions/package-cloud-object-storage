@@ -1,10 +1,6 @@
 # package-cloud-object-storage
 [![Build Status](https://travis-ci.org/ibm-functions/package-cloud-object-storage.svg?branch=master)](https://travis-ci.org/ibm-functions/package-cloud-object-storage)
 
-# Work in progress !!
-
-Do not use for production.
-
 ### Overview
 This repository allows you to deploy a Cloud Object Storage Package for IBM Functions.
 The package contains a set of simple functions to get your started composing IBM Functions Applications.
@@ -92,6 +88,7 @@ deploy.sh
 ```
 
 # Deploy Cloud Object Storage Package with IBM Cloud Console
+[Deploy from IBM Cloud Functions UI](https://console.bluemix.net/openwhisk/create/template/upload-image)
 
 Currently there is no direct way to simply deploy the Cloud Object Storage package from the IBM Cloud Functions UI.  However, there is a workaround that provides you with a way to install the cloud-object-storage package in the NodeJS runtime. 
 
