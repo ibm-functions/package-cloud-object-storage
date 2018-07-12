@@ -18,8 +18,8 @@
 package packages
 
 import org.scalatest.BeforeAndAfterAll
-import common.{TestHelpers, Wsk, WskProps, WskTestHelpers}
-import common.rest.WskRest
+import common.{TestHelpers, Wsk, WskActorSystem, WskProps, WskTestHelpers}
+import common.rest.WskRestOperations
 import com.jayway.restassured.RestAssured
 import com.jayway.restassured.config.SSLConfig
 import spray.json._
@@ -30,11 +30,12 @@ import scala.language.postfixOps
 class CloudObjectStoragePackage
     extends TestHelpers
     with WskTestHelpers
+    with WskActorSystem
     with BeforeAndAfterAll {
 
   implicit val wskprops = WskProps()
   val wsk = new Wsk()
-  val wskRest: common.rest.WskRest = new WskRest
+  val wskRest: common.rest.WskRestOperations = new WskRestOperations
   val allowedActionDuration = 120 seconds
 
   // statuses for deployWeb
