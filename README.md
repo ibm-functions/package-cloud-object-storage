@@ -88,9 +88,7 @@ deploy.sh
 ```
 
 # Deploy Cloud Object Storage Package with IBM Cloud Console
-[Deploy from IBM Cloud Functions UI](https://console.bluemix.net/openwhisk/create/template/upload-image)
-
-Currently there is no direct way to simply deploy the Cloud Object Storage package from the IBM Cloud Functions UI.  However, there is a workaround that provides you with a way to install the cloud-object-storage package in the NodeJS runtime. 
+Currently there is no direct way to deploy the Cloud Object Storage package from the IBM Cloud Functions UI.  However, there is a workaround that provides you with a way to install the cloud-object-storage package in the NodeJS runtime. 
 
 To do this you will have to install the **Upload Image** template which installs the **cloud-object-storage** package as a prerequisite for the template. 
 
