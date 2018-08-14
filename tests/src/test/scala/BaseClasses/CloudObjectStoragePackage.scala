@@ -40,7 +40,7 @@ class CloudObjectStoragePackage
 
   // statuses for deployWeb
   val successStatus =
-    """"status":"success""""
+    """"status": "success""""
 
   val deployTestRepo =
     "https://github.com/ibm-functions/package-cloud-object-storage"
