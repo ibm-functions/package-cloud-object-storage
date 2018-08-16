@@ -109,6 +109,7 @@ To use the Actions in the cloud-object-storage Package, you must bind service cr
 To bind service credentials to all actions in the package, follow steps 5 and 6 in the CLI instructions listed above.
 
 To bind service credentials to individual actions, complete the following steps in the UI. Note: You must complete the following steps for each action that you want to use.
+
 1. Click on an Action from the cloud-object-storage Package that you want to use. The details page for that Action opens.
 2. In the left-hand navigation, click on the Parameters section.
 3. Enter a new parameter. For the key, enter `__bx_creds`. For the value, paste in the service credentials JSON object from the service instance that you created earlier.
