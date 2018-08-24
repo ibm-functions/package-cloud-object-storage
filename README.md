@@ -90,7 +90,7 @@ deploy.sh
 # Deploy Cloud Object Storage Package with IBM Cloud Console
 
 ## Deploy Package from the UI
-In the Cloud Functions console, go to the Create page External link icon.
+In the Cloud Functions console, go to the [Create page](https://console.bluemix.net/openwhisk/create).
 
 Using the Cloud Foundry Org and Cloud Foundry Space lists, select the namespace that you want to install the Object Storage package into. Namespaces are formed from the combined org and space names.
 
@@ -102,19 +102,16 @@ In the Available Runtimes section, select either NodeJS or Python from the drop-
 
 Once the Package has been installed you will be redirected to the Actions page and can search for your new Package, which is named cloud-object-storage.
 
-##Bind Service Credentials
+## Bind Service Credentials
 
-To use the Actions in the cloud-object-storage Package, you must bind service credentials to the actions.
-
-To bind service credentials to all actions in the package, follow steps 5 and 6 in the CLI instructions listed above.
-
-To bind service credentials to individual actions, complete the following steps in the UI. Note: You must complete the following steps for each action that you want to use.
+To use the actions in the cloud-object-storage package, you must bind service credentials to the actions.
+Note: You must complete the following steps for each action that you want to use.
 
 1. Click on an Action from the cloud-object-storage Package that you want to use. The details page for that Action opens.
 2. In the left-hand navigation, click on the Parameters section.
 3. Enter a new parameter. For the key, enter `__bx_creds`. For the value, paste in the service credentials JSON object from the service instance that you created earlier.
 
-Upon a succesful deployment you will notice that you now have the Package **cloud-object-storage** present in your namespace.  You can use these Actions as you would any other Actions as well as edit their code to suit any specific behavior you may need from the IBM Cloud Object Storage package.
+Upon a successful deployment you will notice that you now have the Package **cloud-object-storage** present in your namespace.  You can use these Actions as you would any other Actions as well as edit their code to suit any specific behavior you may need from the IBM Cloud Object Storage package.
 
 ### License
 Apache-2.0
