@@ -21,7 +21,7 @@ import spray.json.DefaultJsonProtocol._
 import org.scalatest.BeforeAndAfterAll
 import scala.concurrent.duration.DurationInt
 import packages.CloudObjectStoragePackage
-import whisk.utils.retry
+import org.apache.openwhisk.utils.retry
 
 abstract class AbstractCredentialsIBMCOSTests
     extends CloudObjectStoragePackage
