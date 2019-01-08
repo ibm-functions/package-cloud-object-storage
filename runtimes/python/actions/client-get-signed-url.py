@@ -52,7 +52,7 @@ def getParamsCOS(args):
   secret_access_key = args.get('secret_access_key', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('cos_hmac_keys', {}).get('secret_access_key', ''))
   api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', '')))
   service_instance_id = args.get('resource_instance_id', args.get('serviceInstanceId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('resource_instance_id', '')))
-  ibm_auth_endpoint = args.get('ibmAuthEndpoint', 'https://iam.ng.bluemix.net/oidc/token')
+  ibm_auth_endpoint = args.get('ibmAuthEndpoint', 'https://iam.cloud.ibm.com/identity/token')
   cos = ibm_boto3.client('s3',
     aws_access_key_id=access_key_id,
     aws_secret_access_key=secret_access_key,
