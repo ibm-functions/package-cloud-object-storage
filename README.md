@@ -6,7 +6,7 @@ This repository allows you to deploy a Cloud Object Storage Package for IBM Func
 The package contains a set of simple functions to get your started composing IBM Functions Applications.
 
 ### Available Languages
-This package is available in Node.js 8, Node.js 6, and Python 3.
+This package is available in Node.js 10 and Python 3.7
 
 # Deploy Cloud Object Storage Package with IBM Cloud Command Line Interface (CLI)
 
