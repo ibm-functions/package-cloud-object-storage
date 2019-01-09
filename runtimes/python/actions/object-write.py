@@ -43,7 +43,7 @@ def getParamsCOS(args):
   endpoint = args.get('endpoint','https://s3-api.us-geo.objectstorage.softlayer.net')
   api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', '')))
   service_instance_id = args.get('resource_instance_id', args.get('serviceInstanceId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('resource_instance_id', '')))
-  ibm_auth_endpoint = args.get('ibmAuthEndpoint', 'https://iam.ng.bluemix.net/oidc/token')
+  ibm_auth_endpoint = args.get('ibmAuthEndpoint', 'https://iam.cloud.ibm.com/identity/token')
   cos = ibm_boto3.client('s3',
     ibm_api_key_id=api_key_id,
     ibm_service_instance_id=service_instance_id,
