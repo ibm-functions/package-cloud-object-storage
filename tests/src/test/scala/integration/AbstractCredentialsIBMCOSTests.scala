@@ -28,7 +28,7 @@ abstract class AbstractCredentialsIBMCOSTests
     with WskTestHelpers
     with BeforeAndAfterAll {
 
-  var defaultKind = Some("nodejs:8")
+  var defaultKind = Some("nodejs:10")
   val creds = TestUtils.getCredentials("cloud-object-storage")
   val apikey = creds.get("apikey").getAsString()
   var resource_instance_id = creds.get("resource_instance_id").getAsString()

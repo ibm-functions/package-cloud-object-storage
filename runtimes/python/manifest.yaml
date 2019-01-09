@@ -5,22 +5,22 @@ project:
       actions:
         object-read:
           function: actions/object-read.py
-          runtime: python-jessie:3
+          runtime: python:3.7
         object-write:
           function: actions/object-write.py
-          runtime: python-jessie:3
+          runtime: python:3.7
         object-delete:
           function: actions/object-delete.py
-          runtime: python-jessie:3
+          runtime: python:3.7
         client-get-signed-url:
           function: actions/client-get-signed-url.py
-          runtime: python-jessie:3
+          runtime: python:3.7
         bucket-cors-get:
           function: actions/bucket-cors-get.py
-          runtime: python-jessie:3
+          runtime: python:3.7
         bucket-cors-put:
           function: actions/bucket-cors-put.py
-          runtime: python-jessie:3
+          runtime: python:3.7
         bucket-cors-delete:
           function: actions/bucket-cors-delete.py
-          runtime: python-jessie:3
+          runtime: python:3.7
