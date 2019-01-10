@@ -32,44 +32,44 @@ class CloudObjectStorageTests
 
   behavior of "Cloud Object Storage Package"
 
-  // test to create the nodejs 8 Cloud Object Storage package from github url.  Will use preinstalled folder.
-  it should "create the nodejs 8 Cloud Object Storage package from github url" in {
-    deployNodeJS8
+  // test to create the nodejs 10 Cloud Object Storage package from github url.  Will use preinstalled folder.
+  it should "create the nodejs 10 Cloud Object Storage package from github url" in {
+    deployNodeJS
     // create unique asset names
 
     // ensure actions exist and are of expected kind
     val testActionWrite =
       wsk.action.get(actionWrite)
-    verifyAction(testActionWrite, actionWrite, JsString(nodejs8kind))
+    verifyAction(testActionWrite, actionWrite, JsString(nodejskind))
 
     val testActionRead = wsk.action.get(actionRead)
-    verifyAction(testActionRead, actionRead, JsString(nodejs8kind))
+    verifyAction(testActionRead, actionRead, JsString(nodejskind))
 
     val testActionDelete = wsk.action.get(actionDelete)
-    verifyAction(testActionDelete, actionDelete, JsString(nodejs8kind))
+    verifyAction(testActionDelete, actionDelete, JsString(nodejskind))
 
     val testActionGetSignedUrl = wsk.action.get(actionGetSignedUrl)
     verifyAction(testActionGetSignedUrl,
                  actionGetSignedUrl,
-                 JsString(nodejs8kind))
+                 JsString(nodejskind))
 
     val testActionBucketCorsGet = wsk.action.get(actionBucketCorsGet)
     verifyAction(testActionBucketCorsGet,
                  actionBucketCorsGet,
-                 JsString(nodejs8kind))
+                 JsString(nodejskind))
 
     val testActionBucketCorsPut = wsk.action.get(actionBucketCorsPut)
     verifyAction(testActionBucketCorsPut,
                  actionBucketCorsPut,
-                 JsString(nodejs8kind))
+                 JsString(nodejskind))
 
     val testActionBucketCorsDelete =
       wsk.action.get(actionBucketCorsDelete)
     verifyAction(testActionBucketCorsDelete,
                  actionBucketCorsDelete,
-                 JsString(nodejs8kind))
+                 JsString(nodejskind))
     // clean up after test
-    deleteNodeJS8
+    deleteNodeJS
   }
 
   // test to create the python Cloud Object Storage package from github url.  Will use preinstalled folder.

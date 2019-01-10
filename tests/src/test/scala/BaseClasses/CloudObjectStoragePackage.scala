@@ -50,12 +50,12 @@ class CloudObjectStoragePackage
     s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
 
   //set parameters for deploy tests
-  val node8RuntimePath = "runtimes/nodejs"
-  val nodejs8folder = "../runtimes/nodejs";
-  val nodejs8kind = "nodejs:8"
+  val nodejsRuntimePath = "runtimes/nodejs"
+  val nodejsfolder = "../runtimes/nodejs";
+  val nodejskind = "nodejs:10"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "../runtimes/python";
-  val pythonkind = "python-jessie:3"
+  val pythonkind = "python:3.7"
 
   //action definitions
   val actionWrite = packageName + "/object-write"
@@ -68,11 +68,11 @@ class CloudObjectStoragePackage
 
   behavior of "Cloud Object Storage Package"
 
-  def deployNodeJS8 = {
+  def deployNodeJS = {
     makePostCallWithExpectedResult(
       JsObject(
         "gitUrl" -> JsString(deployTestRepo),
-        "manifestPath" -> JsString(node8RuntimePath),
+        "manifestPath" -> JsString(nodejsRuntimePath),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
       ),
@@ -81,7 +81,7 @@ class CloudObjectStoragePackage
     );
   }
 
-  def deleteNodeJS8 = {
+  def deleteNodeJS = {
     // create unique asset names
     wsk.action.delete(actionWrite)
     wsk.action.delete(actionRead)

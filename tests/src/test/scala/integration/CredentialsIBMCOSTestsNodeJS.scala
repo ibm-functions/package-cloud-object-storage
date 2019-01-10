@@ -21,20 +21,20 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.BeforeAndAfterAll
 
 @RunWith(classOf[JUnitRunner])
-class CredentialsIBMCOSTestsNodeJS8
+class CredentialsIBMCOSTestsNodeJS
     extends AbstractCredentialsIBMCOSTests
     with WskTestHelpers
     with BeforeAndAfterAll {
 
   override def getRuntime: String = {
-    return "NodeJs8"
+    return "NodeJs10"
   }
 
   override def deployRuntime = {
-    deployNodeJS8
+    deployNodeJS
   }
 
   override def deleteRuntime = {
-    deleteNodeJS8
+    deleteNodeJS
   }
 }
