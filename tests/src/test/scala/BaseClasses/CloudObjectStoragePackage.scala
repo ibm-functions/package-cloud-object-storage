@@ -66,6 +66,8 @@ class CloudObjectStoragePackage
   val actionBucketCorsPut = packageName + "/bucket-cors-put"
   val actionBucketCorsDelete = packageName + "/bucket-cors-delete"
 
+  val maxRetries = System.getProperty("max.retries", "30").toInt
+
   behavior of "Cloud Object Storage Package"
 
   def deployNodeJS = {
@@ -90,6 +92,7 @@ class CloudObjectStoragePackage
     wsk.action.delete(actionBucketCorsGet)
     wsk.action.delete(actionBucketCorsPut)
     wsk.action.delete(actionBucketCorsDelete)
+    Thread.sleep(maxRetries * 1000)
     wsk.pkg.delete(packageName)
   }
 
@@ -114,6 +117,7 @@ class CloudObjectStoragePackage
     wsk.action.delete(actionBucketCorsGet)
     wsk.action.delete(actionBucketCorsPut)
     wsk.action.delete(actionBucketCorsDelete)
+    Thread.sleep(maxRetries * 1000)
     wsk.pkg.delete(packageName)
   }
 
