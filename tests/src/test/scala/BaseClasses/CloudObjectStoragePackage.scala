@@ -17,11 +17,11 @@
 
 package packages
 
-import org.scalatest.BeforeAndAfterAll
-import common.{TestHelpers, Wsk, WskActorSystem, WskProps, WskTestHelpers}
 import common.rest.WskRestOperations
-import com.jayway.restassured.RestAssured
-import com.jayway.restassured.config.SSLConfig
+import common._
+import io.restassured.RestAssured
+import io.restassured.config.SSLConfig
+import org.scalatest.BeforeAndAfterAll
 import spray.json._
 
 import scala.concurrent.duration.DurationInt
