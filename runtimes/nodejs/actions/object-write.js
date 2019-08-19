@@ -15,12 +15,17 @@ const CloudObjectStorage = require('ibm-cos-sdk');
 
 async function main(args) {
   const { cos, params } = getParamsCOS(args, CloudObjectStorage);
-
   let response;
   const result = {
     bucket: params.bucket,
     key: params.key,
   };
+
+  if (!params.bucket || !params.key || !params.body || !cos) {
+    result.message = "bucket name, key, body, and apikey are required for this operation."
+    return result
+  }
+
   try {
     response = await cos.putObject({
       Bucket: params.bucket, Key: params.key, Body: params.body,
@@ -50,21 +55,39 @@ async function main(args) {
 
 
 function getParamsCOS(args, COS) {
+  var bxCredsApiKey = ""
+  var bxCredsResourceInstanceId = ""
+
+  if (args.__bx_creds && args.__bx_creds['cloud-object-storage']) {
+    if (args.__bx_creds['cloud-object-storage'].apiKey) {
+      bxCredsApiKey = args.__bx_creds['cloud-object-storage'].apikey
+    }
+    if (args.__bx_creds['cloud-object-storage'].resource_instance_id) {
+      bxCredsResourceInstanceId = args.__bx_creds['cloud-object-storage'].resource_instance_id
+    }
+  }
+
   const { bucket, key } = args;
   let { body } = args;
   if (body.type === 'Buffer') {
     body = Buffer.from(body.data);
   }
 
-  const endpoint = args.endpoint || 's3-api.us-geo.objectstorage.softlayer.net';
+  const endpoint = args.endpoint || 's3.us.cloud-object-storage.appdomain.cloud';
   const ibmAuthEndpoint = args.ibmAuthEndpoint || 'https://iam.cloud.ibm.com/identity/token';
-  const apiKeyId = args.apikey || args.apiKeyId || args.__bx_creds['cloud-object-storage'].apikey;
-  const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || args.__bx_creds['cloud-object-storage'].resource_instance_id;
+  const apiKeyId = args.apikey || args.apiKeyId || bxCredsApiKey || process.env.__OW_IAM_NAMESPACE_API_KEY;
+  const serviceInstanceId = args.resource_instance_id || args.serviceInstanceId || bxCredsResourceInstanceId;
 
   const params = {};
   params.bucket = bucket;
   params.key = key;
   params.body = body;
+
+  if (!apiKeyId) {
+    const cos = null
+    return { cos, params }
+  }
+
   const cos = new COS.S3({
     endpoint, ibmAuthEndpoint, apiKeyId, serviceInstanceId,
   });

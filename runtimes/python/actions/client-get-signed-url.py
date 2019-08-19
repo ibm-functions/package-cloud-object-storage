@@ -47,7 +47,7 @@ def getParamsCOS(args):
     index = operation.find('object')
     operation = operation[:index] + '_' + operation[index:]
   expires = args.get('expires', 60 * 15)
-  endpoint = args.get('endpoint','https://s3-api.us-geo.objectstorage.softlayer.net')
+  endpoint = args.get('endpoint','https://s3.us.cloud-object-storage.appdomain.cloud')
   access_key_id=args.get('access_key_id', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('cos_hmac_keys', {}).get('access_key_id', ''))
   secret_access_key = args.get('secret_access_key', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('cos_hmac_keys', {}).get('secret_access_key', ''))
   api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', '')))
