@@ -12,18 +12,29 @@
 
 import sys
 import json
+import os
 import ibm_boto3
-from ibm_botocore.client import Config
+from ibm_botocore.client import Config, ClientError
 
 def main(args):
   resultsGetParams = getParamsCOS(args)
-  cos = resultsGetParams['cos']
-  params = resultsGetParams['params']
-  bucket = params['bucket']
-  key = params['key']
+  cos = resultsGetParams.get('cos')
+  params = resultsGetParams.get('params')
+  bucket = params.get('bucket')
+  key = params.get('key')
+  body = params.get('body')
+
+  if not bucket or not key or not body or not cos:
+    return {
+      'bucket':bucket,
+      'key':key,
+      'body':body,
+      'message':"bucket name, key, body, and apikey are required for this operation."
+    } 
+  
   try:
     object = cos.put_object(
-    Body=params['body'],
+    Body=body,
     Bucket=bucket,
     Key=key,
   )
@@ -40,8 +51,8 @@ def main(args):
 
 
 def getParamsCOS(args):
-  endpoint = args.get('endpoint','https://s3-api.us-geo.objectstorage.softlayer.net')
-  api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', '')))
+  endpoint = args.get('endpoint','https://s3.us.cloud-object-storage.appdomain.cloud')
+  api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', os.environ.get('__OW_IAM_NAMESPACE_API_KEY') or ''))) 
   service_instance_id = args.get('resource_instance_id', args.get('serviceInstanceId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('resource_instance_id', '')))
   ibm_auth_endpoint = args.get('ibmAuthEndpoint', 'https://iam.cloud.ibm.com/identity/token')
   cos = ibm_boto3.client('s3',
@@ -51,7 +62,9 @@ def getParamsCOS(args):
     config=Config(signature_version='oauth'),
     endpoint_url=endpoint)
   params = {}
-  params['bucket'] = args['bucket']
-  params['key'] = args['key']
-  params['body'] = args['body']
+  params['bucket'] = args.get('bucket')
+  params['key'] = args.get('key')
+  params['body'] = args.get('body')
+  if not api_key_id:
+    return {'cos': null, 'params':params}
   return {'cos':cos, 'params':params}
