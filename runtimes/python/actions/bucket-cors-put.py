@@ -28,11 +28,12 @@ def main(args):
   bucket = params.get('bucket')
   corsConfig = params.get('corsConfig')
 
-  if not bucket or not corsConfig or not cos:
-    return {
-      'bucket':bucket,
-      'message':"bucket name, corsConfig, and apikey are required for this operation."
-    } 
+  try:
+    if not bucket or not corsConfig or not cos:
+      raise ValueError("bucket name, corsConfig, and apikey are required for this operation.")
+  except ValueError as e:
+    print(e)
+    raise
 
   try:
     object = cos.put_bucket_cors(
@@ -54,15 +55,15 @@ def getParamsCOS(args):
   api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', os.environ.get('__OW_IAM_NAMESPACE_API_KEY') or ''))) 
   service_instance_id = args.get('resource_instance_id', args.get('serviceInstanceId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('resource_instance_id', '')))
   ibm_auth_endpoint = args.get('ibmAuthEndpoint', 'https://iam.cloud.ibm.com/identity/token')
+  params = {}
+  params['bucket'] = args.get('bucket')
+  params['corsConfig'] = args.get('corsConfig')
+  if not api_key_id:
+    return {'cos': None, 'params':params}
   cos = ibm_boto3.client('s3',
     ibm_api_key_id=api_key_id,
     ibm_service_instance_id=service_instance_id,
     ibm_auth_endpoint=ibm_auth_endpoint,
     config=Config(signature_version='oauth'),
     endpoint_url=endpoint)
-  params = {}
-  params['bucket'] = args.get('bucket')
-  params['corsConfig'] = args.get('corsConfig')
-  if not api_key_id:
-    return {'cos': null, 'params':params}
   return {'cos':cos, 'params':params}
