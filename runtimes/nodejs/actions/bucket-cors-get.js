@@ -20,8 +20,8 @@ async function main(args) {
   };
 
   if (!params.bucket || !cos) {
-    result.message = "bucket name and apikey are required for this operation."
-    return result
+    result.message = "bucket name and apikey are required for this operation.";
+    throw result;
   }
 
   try {
@@ -51,15 +51,15 @@ async function main(args) {
 
 
 function getParamsCOS(args, COS) {
-  var bxCredsApiKey = ""
-  var bxCredsResourceInstanceId = ""
+  var bxCredsApiKey;
+  var bxCredsResourceInstanceId;
 
   if (args.__bx_creds && args.__bx_creds['cloud-object-storage']) {
-    if (args.__bx_creds['cloud-object-storage'].apiKey) {
-      bxCredsApiKey = args.__bx_creds['cloud-object-storage'].apikey
+    if (args.__bx_creds['cloud-object-storage'].apikey) {
+      bxCredsApiKey = args.__bx_creds['cloud-object-storage'].apikey;
     }
     if (args.__bx_creds['cloud-object-storage'].resource_instance_id) {
-      bxCredsResourceInstanceId = args.__bx_creds['cloud-object-storage'].resource_instance_id
+      bxCredsResourceInstanceId = args.__bx_creds['cloud-object-storage'].resource_instance_id;
     }
   }
 
@@ -73,8 +73,8 @@ function getParamsCOS(args, COS) {
   params.bucket = bucket;
 
   if (!apiKeyId) {
-    const cos = null
-    return { cos, params }
+    const cos = null;
+    return { cos, params };
   }
 
   const cos = new COS.S3({
