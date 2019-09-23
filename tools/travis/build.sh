@@ -20,10 +20,10 @@ IMAGE_PREFIX="testing"
 #scancode/scanCode.py --config scancode/ASF-Release-v2.cfg $ROOTDIR
 
 #pull down images
-docker pull openwhisk/controller
-docker tag openwhisk/controller ${IMAGE_PREFIX}/controller
-docker pull openwhisk/invoker
-docker tag openwhisk/invoker ${IMAGE_PREFIX}/invoker
+docker pull openwhisk/controller:nightly
+docker tag openwhisk/controller:nightly ${IMAGE_PREFIX}/controller
+docker pull openwhisk/invoker:nightly
+docker tag openwhisk/invoker:nightly ${IMAGE_PREFIX}/invoker
 
 # Build OpenWhisk
 cd $OPENWHISK_HOME
