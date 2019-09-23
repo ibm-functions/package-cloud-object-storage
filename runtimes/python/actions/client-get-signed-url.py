@@ -64,6 +64,7 @@ def getParamsCOS(args):
     operation = operation[:index] + '_' + operation[index:]
   expires = args.get('expires', 60 * 15)
   endpoint = args.get('endpoint','https://s3.us.cloud-object-storage.appdomain.cloud')
+  if not (endpoint.startswith("https://") or endpoint.startswith("http://")) : endpoint = "https://" + endpoint
   access_key_id=args.get('access_key_id', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('cos_hmac_keys', {}).get('access_key_id', ''))
   secret_access_key = args.get('secret_access_key', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('cos_hmac_keys', {}).get('secret_access_key', ''))
   api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', os.environ.get('__OW_IAM_NAMESPACE_API_KEY') or ''))) 

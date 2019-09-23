@@ -48,6 +48,7 @@ def main(args):
 
 def getParamsCOS(args):
   endpoint = args.get('endpoint','https://s3.us.cloud-object-storage.appdomain.cloud')
+  if not (endpoint.startswith("https://") or endpoint.startswith("http://")) : endpoint = "https://" + endpoint
   api_key_id = args.get('apikey', args.get('apiKeyId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('apikey', os.environ.get('__OW_IAM_NAMESPACE_API_KEY') or ''))) 
   service_instance_id = args.get('resource_instance_id', args.get('serviceInstanceId', args.get('__bx_creds', {}).get('cloud-object-storage', {}).get('resource_instance_id', '')))
   ibm_auth_endpoint = args.get('ibmAuthEndpoint', 'https://iam.cloud.ibm.com/identity/token')
