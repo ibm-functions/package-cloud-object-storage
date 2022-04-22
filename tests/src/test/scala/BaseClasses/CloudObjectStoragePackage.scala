@@ -52,10 +52,10 @@ class CloudObjectStoragePackage
   //set parameters for deploy tests
   val nodejsRuntimePath = "runtimes/nodejs"
   val nodejsfolder = "../runtimes/nodejs";
-  val nodejskind = "nodejs:10"
+  val nodejskind = "nodejs:12"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "../runtimes/python";
-  val pythonkind = "python:3.7"
+  val pythonkind = "python:3.9"
 
   //action definitions
   val actionWrite = packageName + "/object-write"
