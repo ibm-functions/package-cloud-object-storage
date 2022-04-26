@@ -32,8 +32,8 @@ class CloudObjectStorageTests
 
   behavior of "Cloud Object Storage Package"
 
-  // test to create the nodejs 10 Cloud Object Storage package from github url.  Will use preinstalled folder.
-  it should "create the nodejs 10 Cloud Object Storage package from github url" in {
+  // test to create the nodejs 12 Cloud Object Storage package from github url.  Will use preinstalled folder.
+  it should "create the nodejs 12 Cloud Object Storage package from github url" in {
     deployNodeJS
     // create unique asset names
 

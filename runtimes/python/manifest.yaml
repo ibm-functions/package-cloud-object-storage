@@ -5,22 +5,22 @@ project:
       actions:
         object-read:
           function: actions/object-read.py
-          runtime: python:3.7
+          runtime: python:3.9
         object-write:
           function: actions/object-write.py
-          runtime: python:3.7
+          runtime: python:3.9
         object-delete:
           function: actions/object-delete.py
-          runtime: python:3.7
+          runtime: python:3.9
         client-get-signed-url:
           function: actions/client-get-signed-url.py
-          runtime: python:3.7
+          runtime: python:3.9
         bucket-cors-get:
           function: actions/bucket-cors-get.py
-          runtime: python:3.7
+          runtime: python:3.9
         bucket-cors-put:
           function: actions/bucket-cors-put.py
-          runtime: python:3.7
+          runtime: python:3.9
         bucket-cors-delete:
           function: actions/bucket-cors-delete.py
-          runtime: python:3.7
+          runtime: python:3.9

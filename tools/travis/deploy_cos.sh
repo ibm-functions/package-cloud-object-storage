@@ -22,5 +22,5 @@ mkdir -p ${PREINSTALL_DIR}/ibm-functions/package-cloud-object-storage
 cp -a runtimes ${PREINSTALL_DIR}/ibm-functions/package-cloud-object-storage/
 
 # Install the deploy package
-cd $HOMEDIR/incubator-openwhisk-package-deploy/packages
+cd $HOMEDIR/openwhisk-package-deploy/packages
 ./installCatalog.sh $WSK_SYSTEM_AUTH_KEY $WHISK_APIHOST $WSK_CLI

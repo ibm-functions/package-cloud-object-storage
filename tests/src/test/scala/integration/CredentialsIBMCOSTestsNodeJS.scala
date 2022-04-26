@@ -27,7 +27,7 @@ class CredentialsIBMCOSTestsNodeJS
     with BeforeAndAfterAll {
 
   override def getRuntime: String = {
-    return "NodeJs10"
+    return "NodeJs12"
   }
 
   override def deployRuntime = {

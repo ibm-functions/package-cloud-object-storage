@@ -32,20 +32,20 @@ runtimes_manifest:
   defaultImageTag: "latest"
   runtimes:
     nodejs:
-    - kind: "nodejs:10"
+    - kind: "nodejs:12"
       default: true
       image:
-        name: "action-nodejs-v10"
+        name: "action-nodejs-v12"
         prefix: "ibmfunctions"
         tag: "latest"
       deprecated: false
     python:
-    - kind: "python:3.7"
+    - kind: "python:3.9"
       default: true
       image:
-        name: "action-python-v3.7"
+        name: "action-python-v3.9"
         prefix: "ibmfunctions"
-        tag: "latest"
+        tag: "master"
       deprecated: false
   blackboxes:
   - name: "dockerskeleton"

@@ -5,22 +5,22 @@ project:
       actions:
         object-read:
           function: actions/object-read.js
-          runtime: nodejs:10
+          runtime: nodejs:12
         object-write:
           function: actions/object-write.js
-          runtime: nodejs:10
+          runtime: nodejs:12
         object-delete:
           function: actions/object-delete.js
-          runtime: nodejs:10
+          runtime: nodejs:12
         client-get-signed-url:
           function: actions/client-get-signed-url.js
-          runtime: nodejs:10
+          runtime: nodejs:12
         bucket-cors-get:
           function: actions/bucket-cors-get.js
-          runtime: nodejs:10
+          runtime: nodejs:12
         bucket-cors-put:
           function: actions/bucket-cors-put.js
-          runtime: nodejs:10
+          runtime: nodejs:12
         bucket-cors-delete:
           function: actions/bucket-cors-delete.js
-          runtime: nodejs:10
+          runtime: nodejs:12
